@@ -43,15 +43,16 @@ for (const slug of ['ledger-hears-no-coins', 'tide-goes-out', 'shelf-vs-hotpot',
   assert.ok(!fs.existsSync(path.join(out, `story/${slug}/index.html`)), `planned ${slug} has no fake story page`);
 }
 const index = read('terms/index.html');
-assert.equal((index.match(/class="term-row"/g) || []).length, 18, 'eighteen terms including the insurance story');
+assert.equal((index.match(/class="term-row"/g) || []).length, 19, 'nineteen terms including deductible');
 assert.match(index, /data-scene=/); assert.match(index, /data-difficulty=/); assert.match(index, /data-tag=/); assert.match(index, /name="difficulty"/);
 assert.match(index, /data-term-search/); assert.match(index, /name="q"/);
-assert.match(index, /data-readable-count>18</);
+assert.match(index, /data-readable-count>19</);
 assert.match(index, /data-preview-count>0</);
 assert.match(index, /data-tag="保险"/);
 assert.doesNotMatch(index, /data-tag="保险"[^>]*>保障专题 · 筹备中/);
 assert.match(read('story/insurance-not-investment/index.html'), /雨伞不是摇钱树/);
 assert.match(read('story/insurance-not-investment/index.html'), /风险转移/);
+assert.match(read('story/insurance-not-investment/index.html'), /免赔额/);
 assert.match(index, /value="L3" disabled/);
 assert.doesNotMatch(index, /data-result-count>0</);
 assert.match(index, /data-search="[^"]*应急金[^"]*三个罐子/);
