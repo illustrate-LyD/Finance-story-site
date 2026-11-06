@@ -1,0 +1,14 @@
+---
+layout: base.njk
+pagination:
+  data: contentData.stories
+  size: 1
+  alias: story
+permalink: "/story/{{ story.slug }}/"
+eleventyComputed:
+  title: "{{ story.title }}"
+  description: "{{ story.hook }}"
+---
+{% from "components.njk" import levelBadge, tags, storyCard %}
+{% set series = contentData.series | selectattr('slug','equalto',story.seriesSlug) | first %}
+<div class="container page-main"><a class="back-link" href="{{ ('/series/' + story.seriesSlug + '/') | url }}">← 返回系列 · {{ series.title }}</a><nav class="breadcrumb" aria-label="面包屑"><a href="{{ '/' | url }}">首页</a><span>/</span><a href="{{ ('/series/' + series.slug + '/') | url }}">{{ series.title }}</a><span>/</span><span aria-current="page">本篇</span></nav><article><header class="story-header"><div class="card-meta">{{ levelBadge(story.level) }}<span class="small">更新于 {{ story.updatedAt | dateCN }}</span></div><h1>{{ story.title }}</h1><p class="lead story-hook">{{ story.hook }}</p>{{ tags(story.tags) }}</header><div class="story-layout"><nav class="story-toc" aria-label="本篇目录"><strong>本篇目录</strong><ol><li><a href="#story">故事</a></li><li><a href="#terms">术语表</a></li><li><a href="#example">实例</a></li>{% if story.hasTakeaways %}<li><a href="#takeaways">带走这几句</a></li>{% endif %}</ol><span class="small">{{ story.terms.length }} 个术语</span></nav><div class="story-content"><section id="story" class="article-body"><h2><span class="section-number">01</span>故事</h2>{{ story.bodyHtml | safe }}</section><section id="terms"><h2><span class="section-number">02</span>术语表</h2><div class="table-wrap"><table class="term-table"><caption class="visually-hidden">本篇金融术语解释</caption><thead><tr><th scope="col">术语</th><th scope="col">解释</th><th scope="col">故事里对应</th><th scope="col"><span class="visually-hidden">索引链接</span></th></tr></thead><tbody>{% for term in story.terms %}<tr><th scope="row">{{ term.name }}</th><td>{{ term.definition }}</td><td>{{ term.context or '见故事正文中的对应比喻' }}</td><td><a href="{{ '/terms/' | url }}?scene={{ story.seriesSlug }}#term-{{ term.name | urlencode }}">查看 ↗</a></td></tr>{% endfor %}</tbody></table></div></section>{% if story.exampleHtml %}<section id="example" class="article-body"><h2><span class="section-number">03</span>实例</h2>{{ story.exampleHtml | safe }}</section>{% endif %}{% if story.hasTakeaways %}<section id="takeaways" class="takeaways"><h2>带走这几句</h2>{{ story.takeawaysHtml | safe }}</section>{% endif %}<aside class="article-disclaimer"><strong>本篇说明</strong><p>{{ story.disclaimer or '本文为金融知识科普，不构成任何投资建议。市场有风险，决策需独立判断。具体产品以官方披露为准。' }}</p></aside></div></div></article><section class="related"><h2>继续读这个系列</h2><div class="story-list">{% for other in series.publishedStories %}{% if other.slug != story.slug %}{{ storyCard(other, contentData.series) }}{% endif %}{% endfor %}<a class="button secondary" href="{{ ('/series/' + series.slug + '/') | url }}">查看 {{ series.title }} 全部故事与预告 →</a></div></section></div>

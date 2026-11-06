@@ -1,0 +1,17 @@
+{
+  "name": "finance-story-site",
+  "version": "0.1.0",
+  "private": true,
+  "description": "金融知识故事站 · 11ty 本地预览 / GitHub Pages",
+  "scripts": {
+    "start": "eleventy --serve",
+    "build": "eleventy",
+    "build:pages": "PATH_PREFIX=/Finance-story-site/ eleventy",
+    "test": "node scripts/smoke-test.mjs"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^3.1.2",
+    "gray-matter": "^4.0.3",
+    "markdown-it": "^14.1.0"
+  }
+}

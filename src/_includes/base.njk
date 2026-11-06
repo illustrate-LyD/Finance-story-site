@@ -1,0 +1,22 @@
+{% from "components.njk" import appHeader %}
+<!doctype html>
+<html lang="zh-Hans" data-theme="light" data-base="{{ '/' | url }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="{{ description or '用场景故事读懂投资与保障：故事、术语与实际例子。' }}">
+  <title>{% if title %}{{ title }} · {% endif %}金融知识故事站</title>
+  <script>try{if(localStorage.getItem('finance-story-theme')==='dark')document.documentElement.dataset.theme='dark'}catch(e){}</script>
+  <link rel="stylesheet" href="{{ '/assets/site.css' | url }}">
+  <script src="{{ '/assets/site.js' | url }}" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">跳到正文</a>
+{{ appHeader(contentData.series) }}
+<main id="main" tabindex="-1">
+{{ content | safe }}
+</main>
+<footer class="site-footer"><div class="container footer-inner"><p>本站仅作金融知识科普，不构成投资建议；具体产品以官方披露为准。</p><a href="{{ '/terms/' | url }}">术语索引</a><a href="#top" class="back-top">回到顶部 ↑</a></div></footer>
+</body>
+</html>
