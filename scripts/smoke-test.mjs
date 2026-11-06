@@ -4,29 +4,32 @@ import path from 'node:path';
 const out = path.resolve('_site');
 const read = (p) => { assert.ok(fs.existsSync(path.join(out, p)), `missing ${p}`); return fs.readFileSync(path.join(out, p), 'utf8'); };
 const home = read('index.html');
-assert.equal((home.match(/class="series-card/g) || []).length, 4, 'home shows readable series only');
+assert.equal((home.match(/class="series-card/g) || []).length, 5, 'home shows readable series including family protection');
 assert.match(home, /名人投资理念/);
 assert.equal((home.match(/class="story-card /g) || []).length, 1, 'exactly one featured story');
 assert.match(home, /先读这一篇/);
 assert.match(home, /三个罐子/);
 assert.match(home, /按场景继续/);
 assert.match(home, /约 \d+ 分钟/);
-assert.match(home, /筹备中：家庭保障 · 做生意 · 养老与传承/);
-assert.match(home, /保障专题 · 筹备中/);
-assert.doesNotMatch(home, /tag=%E4%BF%9D%E9%99%A9|tag=保险/, 'insurance shortcut is not a filter link');
-for (const slug of ['markets-cycles', 'first-paycheck', 'home-and-debt', 'investor-ideas']) {
+assert.match(home, /筹备中：做生意 · 养老与传承/);
+assert.doesNotMatch(home, /筹备中：家庭保障/);
+assert.match(home, /tag=%E4%BF%9D%E9%99%A9/, 'insurance tag links once a readable story exists');
+for (const slug of ['markets-cycles', 'first-paycheck', 'home-and-debt', 'family-protection', 'investor-ideas']) {
   const page = read(`series/${slug}/index.html`);
   assert.match(page, /data-filter-form/);
   assert.match(page, /data-readable-count>\d+</);
   assert.doesNotMatch(page, /data-readable-count>0</, `${slug} does not paint a fake zero readable count`);
   assert.match(page, /已发布/);
 }
-for (const slug of ['family-protection', 'running-a-business', 'retirement-legacy']) {
+for (const slug of ['running-a-business', 'retirement-legacy']) {
   const page = read(`series/${slug}/index.html`);
   assert.doesNotMatch(page, /data-filter-form/);
   assert.match(page, /筹备中/);
 }
-assert.match(read('series/family-protection/index.html'), /保障专题 · 筹备中/);
+const protection = read('series/family-protection/index.html');
+assert.match(protection, /雨伞不是摇钱树/);
+assert.match(protection, /data-readable-count>1</);
+assert.doesNotMatch(protection, /保障专题 · 筹备中/);
 const paycheckCounts = read('series/first-paycheck/index.html');
 assert.match(paycheckCounts, /data-readable-count>1</);
 assert.match(paycheckCounts, /data-preview-count>2</);
@@ -38,12 +41,15 @@ for (const slug of ['ledger-hears-no-coins', 'tide-goes-out', 'shelf-vs-hotpot',
   assert.ok(!fs.existsSync(path.join(out, `story/${slug}/index.html`)), `planned ${slug} has no fake story page`);
 }
 const index = read('terms/index.html');
-assert.equal((index.match(/class="term-row"/g) || []).length, 15, 'fifteen terms from five published pieces');
+assert.equal((index.match(/class="term-row"/g) || []).length, 18, 'eighteen terms including the insurance story');
 assert.match(index, /data-scene=/); assert.match(index, /data-difficulty=/); assert.match(index, /data-tag=/); assert.match(index, /name="difficulty"/);
 assert.match(index, /data-term-search/); assert.match(index, /name="q"/);
-assert.match(index, /data-readable-count>15</);
+assert.match(index, /data-readable-count>18</);
 assert.match(index, /data-preview-count>0</);
-assert.match(index, /保障专题 · 筹备中/);
+assert.match(index, /data-tag="保险"/);
+assert.doesNotMatch(index, /data-tag="保险"[^>]*>保障专题 · 筹备中/);
+assert.match(read('story/insurance-not-investment/index.html'), /雨伞不是摇钱树/);
+assert.match(read('story/insurance-not-investment/index.html'), /风险转移/);
 assert.match(index, /value="L3" disabled/);
 assert.doesNotMatch(index, /data-result-count>0</);
 assert.match(index, /data-search="[^"]*应急金[^"]*三个罐子/);

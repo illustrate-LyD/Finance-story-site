@@ -23,7 +23,8 @@
         {
           "id": "family-protection",
           "title": "家庭保障",
-          "batch": 2
+          "batch": 1,
+          "summary": "保险、应急金与家庭现金流安全垫"
         },
         {
           "id": "running-a-business",
