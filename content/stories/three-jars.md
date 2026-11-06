@@ -4,6 +4,7 @@ title: 三个罐子
 series: first-paycheck
 tags: [投资]
 difficulty: L1
+featured: true
 summary: 工资到账那天，先分罐，再谈赚多少。
 terms:
   - name: 应急金

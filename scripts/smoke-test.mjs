@@ -10,7 +10,7 @@ assert.match(home, /7 个场景 · 6 篇可读 · \d+ 篇预告/);
 assert.equal((home.match(/开始阅读/g) || []).length, 1, 'one primary call to action');
 assert.ok((home.match(/class="story-card /g) || []).length <= 5, 'featured plus at most four continue cards');
 assert.match(home, /先读这一篇/);
-assert.match(home, /三个罐子/);
+assert.match(home, /<h2>三个罐子<\/h2>/, 'featured slot is three-jars');
 assert.match(home, /续读/);
 assert.match(home, /约 \d+ 分钟/);
 assert.match(home, /筹备中：做生意 · 养老与传承/);
