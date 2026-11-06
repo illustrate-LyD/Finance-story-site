@@ -2,6 +2,7 @@
 id: first-paycheck-001
 title: 三个罐子
 series: first-paycheck
+featured: primary
 tags: [投资]
 difficulty: L1
 summary: 工资到账那天，先分罐，再谈赚多少。

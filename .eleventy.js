@@ -78,7 +78,19 @@ function loadContent() {
   });
   const readableSeries = seriesModels.filter((s) => s.publishedStories.length > 0);
   const preparingSeries = seriesModels.filter((s) => s.publishedStories.length === 0);
-  const featured = stories.find((s) => s.slug === 'three-jars') || stories[0] || null;
+  const featuredRank = (story) => {
+    const flag = story.featured;
+    if (flag === 'primary') return 0;
+    if (flag === true || flag === 'true') return 1;
+    return 2;
+  };
+  const publishedOrder = [...stories].sort((a, b) => {
+    const rank = featuredRank(a) - featuredRank(b);
+    if (rank) return rank;
+    return String(b.updatedAt || '').localeCompare(String(a.updatedAt || ''));
+  });
+  const featured = publishedOrder[0] || null;
+  const continueReads = featured ? publishedOrder.filter((story) => story.slug !== featured.slug).slice(0, 4) : [];
   const termMap = new Map();
   stories.forEach((story) => story.terms.forEach((term) => {
     const existing = termMap.get(term.name);
@@ -88,7 +100,8 @@ function loadContent() {
   }));
   const seriesBySlug = Object.fromEntries(seriesModels.map((s) => [s.slug, s]));
   return { series: seriesModels, stories, allStories, terms: [...termMap.values()], levelMap, seriesBySlug,
-    coverage: coverageOf(stories), readableSeries, preparingSeries, featured };
+    coverage: coverageOf(stories), readableSeries, preparingSeries, featured, continueReads,
+    previewCount: planned.length };
 }
 module.exports = function(eleventyConfig) {
   const data = loadContent();
