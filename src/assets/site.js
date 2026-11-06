@@ -35,7 +35,10 @@
   const items = [...document.querySelectorAll('[data-filter-list] [data-story]')];
   const empty = document.querySelector('[data-empty]');
   const list = document.querySelector('[data-filter-list]');
-  const count = document.querySelector('[data-result-count]');
+  const readableCountEl = document.querySelector('[data-readable-count]');
+  const previewCountEl = document.querySelector('[data-preview-count]');
+  const publishedSection = document.querySelector('[data-published-list]');
+  const previewBlock = document.querySelector('[data-preview-block]');
   const summary = document.querySelector('[data-selection-summary]');
   const lockedScene = form.querySelector('input[name="scene"]').value;
   const searchInput = form.querySelector('[data-term-search]');
@@ -47,15 +50,18 @@
     if (searchInput) searchInput.value = params.get('q') || '';
     const selectedTags = unique(params.getAll('tag').flatMap(split));
     form.querySelectorAll('[data-tag]').forEach((button) => {
-      const selected = selectedTags.includes(button.dataset.tag);
+      const selected = !button.disabled && selectedTags.includes(button.dataset.tag);
       button.setAttribute('aria-pressed', String(selected));
     });
-    const level = ['L1', 'L2', 'L3'].includes(params.get('difficulty')) ? params.get('difficulty') : '';
-    const radio = form.querySelector(`input[name="difficulty"][value="${level}"]`);
-    if (radio) radio.checked = true;
+    const requestedLevel = ['L1', 'L2', 'L3'].includes(params.get('difficulty')) ? params.get('difficulty') : '';
+    const radio = form.querySelector(`input[name="difficulty"][value="${requestedLevel}"]`);
+    const fallback = form.querySelector('input[name="difficulty"][value=""]');
+    if (radio && !radio.disabled) radio.checked = true;
+    else if (fallback) fallback.checked = true;
     if (!lockedScene) {
-      const scene = params.get('scene') || '';
-      form.querySelectorAll('[data-scene]').forEach((button) => {
+      const sceneButton = [...form.querySelectorAll('button[data-scene]')].find((button) => (button.dataset.scene || '') === (params.get('scene') || ''));
+      const scene = sceneButton && !sceneButton.disabled ? (sceneButton.dataset.scene || '') : '';
+      form.querySelectorAll('button[data-scene]').forEach((button) => {
         const selected = (button.dataset.scene || '') === scene;
         button.setAttribute('aria-pressed', String(selected));
         button.classList.toggle('selected', selected);
@@ -67,11 +73,13 @@
   function applyFilters() {
     const tags = form.querySelectorAll('[data-tag][aria-pressed="true"]');
     const selectedTags = [...tags].map((button) => button.dataset.tag);
-    const level = form.querySelector('input[name="difficulty"]:checked').value;
+    const checkedLevel = form.querySelector('input[name="difficulty"]:checked');
+    const level = checkedLevel && !checkedLevel.disabled ? checkedLevel.value : '';
     const scene = lockedScene || form.querySelector('input[name="scene"]').value;
     const queryText = searchInput ? searchInput.value.trim() : '';
     const needle = queryText.toLowerCase();
-    let visible = 0;
+    let readable = 0;
+    let preview = 0;
     items.forEach((item) => {
       const itemTags = unique(split(item.dataset.tags));
       const levels = split(item.dataset.difficulty);
@@ -82,11 +90,17 @@
         (!level || levels.includes(level)) &&
         (!needle || haystack.includes(needle));
       item.hidden = !matches;
-      if (matches) visible++;
+      if (matches) {
+        if (item.dataset.planned === 'true') preview++;
+        else readable++;
+      }
     });
-    if (count) count.textContent = visible;
-    if (empty) empty.hidden = visible !== 0;
-    if (list) list.hidden = visible === 0;
+    if (readableCountEl) readableCountEl.textContent = readable;
+    if (previewCountEl) previewCountEl.textContent = preview;
+    if (publishedSection) publishedSection.hidden = readable === 0;
+    if (previewBlock) previewBlock.hidden = preview === 0;
+    if (empty) empty.hidden = readable + preview !== 0;
+    if (list && !publishedSection) list.hidden = readable + preview === 0;
     if (summary) summary.textContent = `${selectedTags.length ? selectedTags.join(' / ') : '全部标签'} · ${({'L1':'入门','L2':'进阶','L3':'精读'})[level] || '全部难度'}${queryText ? ` · 搜索「${queryText}」` : ''}`;
 
     const params = new URLSearchParams();
@@ -102,6 +116,8 @@
   form.addEventListener('click', (event) => {
     const tag = event.target.closest('[data-tag]');
     const scene = event.target.closest('button[data-scene]');
+    if (tag && tag.disabled) return;
+    if (scene && scene.disabled) return;
     if (tag) tag.setAttribute('aria-pressed', String(tag.getAttribute('aria-pressed') !== 'true'));
     if (scene) {
       form.querySelectorAll('button[data-scene]').forEach((button) => {

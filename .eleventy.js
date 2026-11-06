@@ -54,7 +54,9 @@ function loadContent() {
     });
     const slug = d.slug || filename.replace(/\.md$/, '');
     const format = d.format === 'brief' ? 'brief' : 'story';
-    return { ...d, slug, format, seriesSlug: d.seriesSlug || d.series, hook: d.hook || d.summary,
+    const readingSource = [bodyMd, exampleMd, takeawaysMd].join('');
+    const readingMinutes = Math.max(1, Math.round(readingSource.replace(/\s+/g, '').length / 400));
+    return { ...d, slug, format, readingMinutes, seriesSlug: d.seriesSlug || d.series, hook: d.hook || d.summary,
       updatedAt: d.updatedAt || d.updated instanceof Date ? d.updated.toISOString().slice(0,10) : String(d.updatedAt || d.updated).slice(0, 10), level, terms, termIds: terms.map((t) => t.id),
       bodyHtml: md.render(bodyMd), exampleHtml: md.render(exampleMd), takeawaysHtml: md.render(takeawaysMd),
       hasTakeaways: Boolean(takeawaysMd), planned: false, url: `/story/${slug}/` };
@@ -64,8 +66,19 @@ function loadContent() {
       hook: p.hook || `大纲知识点：${p.topics.join('、')}。正文待 Bullie 供稿。`, url: `/series/${p.seriesSlug}/` }));
   const allStories = [...stories, ...planned];
   const bySeries = Object.fromEntries(series.map((s) => [s.slug, allStories.filter((story) => story.seriesSlug === s.slug)]));
-  const seriesModels = series.map((s) => ({ ...s, stories: bySeries[s.slug], publishedStories: bySeries[s.slug].filter((x) => !x.planned),
-    levels: [...new Set(bySeries[s.slug].map((x) => x.level))] }));
+  const coverageOf = (list) => ({
+    tags: [...new Set(list.flatMap((s) => s.tags || []))],
+    levels: [...new Set(list.map((s) => s.level).filter(Boolean))],
+  });
+  const seriesModels = series.map((s) => {
+    const storiesIn = bySeries[s.slug] || [];
+    const publishedStories = storiesIn.filter((x) => !x.planned);
+    return { ...s, stories: storiesIn, publishedStories, coverage: coverageOf(publishedStories),
+      levels: [...new Set(storiesIn.map((x) => x.level))] };
+  });
+  const readableSeries = seriesModels.filter((s) => s.publishedStories.length > 0);
+  const preparingSeries = seriesModels.filter((s) => s.publishedStories.length === 0);
+  const featured = stories.find((s) => s.slug === 'three-jars') || stories[0] || null;
   const termMap = new Map();
   stories.forEach((story) => story.terms.forEach((term) => {
     const existing = termMap.get(term.name);
@@ -74,7 +87,8 @@ function loadContent() {
       storySlugs: [story.slug], stories: [story], scenes: [story.seriesSlug], tags: [...story.tags], levels: [story.level] });
   }));
   const seriesBySlug = Object.fromEntries(seriesModels.map((s) => [s.slug, s]));
-  return { series: seriesModels, stories, allStories, terms: [...termMap.values()], levelMap, seriesBySlug };
+  return { series: seriesModels, stories, allStories, terms: [...termMap.values()], levelMap, seriesBySlug,
+    coverage: coverageOf(stories), readableSeries, preparingSeries, featured };
 }
 module.exports = function(eleventyConfig) {
   const data = loadContent();
