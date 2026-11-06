@@ -19,7 +19,7 @@ const pathPrefix = normalizePathPrefix(process.env.PATH_PREFIX || '/');
 function loadContent() {
   const series = fs.readdirSync(path.join(root, 'content/series')).filter((f) => f.endsWith('.md')).map((filename) => {
     const parsed = matter(read(`content/series/${filename}`));
-    return { ...parsed.data, slug: parsed.data.slug || parsed.data.id, description: parsed.content.trim() };
+    return { ...parsed.data, slug: parsed.data.slug || parsed.data.id, format: parsed.data.format === 'brief' ? 'brief' : 'story', description: parsed.content.trim() };
   }).sort((a, b) => a.order - b.order);
   const storyDir = path.join(root, 'content/stories');
   const stories = fs.existsSync(storyDir) ? fs.readdirSync(storyDir).filter((f) => f.endsWith('.md')).map((filename) => {
@@ -51,13 +51,14 @@ function loadContent() {
         context: (row && row[2]) || (typeof term === 'object' ? (term.context || '') : '') };
     });
     const slug = d.slug || filename.replace(/\.md$/, '');
-    return { ...d, slug, seriesSlug: d.seriesSlug || d.series, hook: d.hook || d.summary,
+    const format = d.format === 'brief' ? 'brief' : 'story';
+    return { ...d, slug, format, seriesSlug: d.seriesSlug || d.series, hook: d.hook || d.summary,
       updatedAt: d.updatedAt || d.updated instanceof Date ? d.updated.toISOString().slice(0,10) : String(d.updatedAt || d.updated).slice(0, 10), level, terms, termIds: terms.map((t) => t.id),
       bodyHtml: md.render(bodyMd), exampleHtml: md.render(exampleMd), takeawaysHtml: md.render(takeawaysMd),
       hasTakeaways: Boolean(takeawaysMd), planned: false, url: `/story/${slug}/` };
   }) : [];
   const planned = JSON.parse(read('content/planned-stories.json')).filter((p) => !stories.some((s) => s.slug === p.slug))
-    .map((p) => ({ ...p, level: levelMap[p.difficulty || p.level], terms: [], termIds: [], planned: true,
+    .map((p) => ({ ...p, format: p.format === 'brief' ? 'brief' : 'story', level: levelMap[p.difficulty || p.level], terms: [], termIds: [], planned: true,
       hook: p.hook || `大纲知识点：${p.topics.join('、')}。正文待 Bullie 供稿。`, url: `/series/${p.seriesSlug}/` }));
   const allStories = [...stories, ...planned];
   const bySeries = Object.fromEntries(series.map((s) => [s.slug, allStories.filter((story) => story.seriesSlug === s.slug)]));

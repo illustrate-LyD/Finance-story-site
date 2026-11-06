@@ -38,11 +38,13 @@
   const count = document.querySelector('[data-result-count]');
   const summary = document.querySelector('[data-selection-summary]');
   const lockedScene = form.querySelector('input[name="scene"]').value;
+  const searchInput = form.querySelector('[data-term-search]');
   const split = (value) => value ? value.split(',').map((x) => x.trim()).filter(Boolean) : [];
   const unique = (array) => [...new Set(array)];
 
   function readUrl() {
     const params = new URLSearchParams(window.location.search);
+    if (searchInput) searchInput.value = params.get('q') || '';
     const selectedTags = unique(params.getAll('tag').flatMap(split));
     form.querySelectorAll('[data-tag]').forEach((button) => {
       const selected = selectedTags.includes(button.dataset.tag);
@@ -67,26 +69,31 @@
     const selectedTags = [...tags].map((button) => button.dataset.tag);
     const level = form.querySelector('input[name="difficulty"]:checked').value;
     const scene = lockedScene || form.querySelector('input[name="scene"]').value;
+    const queryText = searchInput ? searchInput.value.trim() : '';
+    const needle = queryText.toLowerCase();
     let visible = 0;
     items.forEach((item) => {
       const itemTags = unique(split(item.dataset.tags));
       const levels = split(item.dataset.difficulty);
       const scenes = split(item.dataset.scene);
+      const haystack = (item.dataset.search || '').toLowerCase();
       const matches = (!scene || scenes.includes(scene)) &&
         (!selectedTags.length || selectedTags.some((tag) => itemTags.includes(tag))) &&
-        (!level || levels.includes(level));
+        (!level || levels.includes(level)) &&
+        (!needle || haystack.includes(needle));
       item.hidden = !matches;
       if (matches) visible++;
     });
     if (count) count.textContent = visible;
     if (empty) empty.hidden = visible !== 0;
     if (list) list.hidden = visible === 0;
-    if (summary) summary.textContent = `${selectedTags.length ? selectedTags.join(' / ') : '全部标签'} · ${({'L1':'入门','L2':'进阶','L3':'精读'})[level] || '全部难度'}`;
+    if (summary) summary.textContent = `${selectedTags.length ? selectedTags.join(' / ') : '全部标签'} · ${({'L1':'入门','L2':'进阶','L3':'精读'})[level] || '全部难度'}${queryText ? ` · 搜索「${queryText}」` : ''}`;
 
     const params = new URLSearchParams();
     if (scene) params.set('scene', scene);
     selectedTags.forEach((tag) => params.append('tag', tag));
     if (level) params.set('difficulty', level);
+    if (queryText) params.set('q', queryText);
     const query = params.toString();
     // Keep the current pathname (already includes GitHub Pages project base).
     history.replaceState(null, '', `${location.pathname}${query ? '?' + query : ''}${location.hash}`);
@@ -108,9 +115,14 @@
   });
   form.addEventListener('change', applyFilters);
   form.addEventListener('submit', (event) => { event.preventDefault(); applyFilters(); });
+  if (searchInput) {
+    searchInput.addEventListener('input', applyFilters);
+    searchInput.addEventListener('search', applyFilters);
+  }
   document.querySelectorAll('[data-clear-filters]').forEach((button) => button.addEventListener('click', () => {
     form.querySelectorAll('[data-tag]').forEach((tag) => tag.setAttribute('aria-pressed', 'false'));
     form.querySelector('input[name="difficulty"][value=""]').checked = true;
+    if (searchInput) searchInput.value = '';
     if (!lockedScene) {
       form.querySelector('input[name="scene"]').value = '';
       form.querySelectorAll('button[data-scene]').forEach((scene) => {

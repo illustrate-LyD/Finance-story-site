@@ -87,18 +87,42 @@
 
 | Token | light | dark | 用途 |
 |-------|-------|------|------|
-| `--bg-canvas` | `#F7F5F0` | `#12141A` | 页底 |
-| `--bg-surface` | `#FFFFFF` | `#1A1D26` | 卡片/顶栏 |
-| `--bg-muted` | `#EFEBE3` | `#242833` | Chip/表头 |
-| `--text-primary` | `#1A1A1A` | `#F2F0EA` | 正文 |
-| `--text-secondary` | `#5C5A55` | `#A8A59C` | 元信息 |
-| `--border-subtle` | `#E2DDD3` | `#2E3340` | 边线 |
-| `--accent` | `#1F6B5C` | `#3D9B88` | 链接/主按钮 |
-| `--accent-soft` | `#E4F2EE` | `#1A3330` | 选中 Chip |
-| `--level-l1` | `#2F6F4E` | `#5CB88A` | 入门 |
-| `--level-l2` | `#9A6B12` | `#E0B84A` | 进阶 |
-| `--level-l3` | `#8B3A3A` | `#E07A7A` | 精读 |
-| `--focus-ring` | = accent | = accent | 键盘焦点 2px |
+| `--bg-canvas` | `#F7F5F0` | `#0C0B0A` | 页底 |
+| `--bg-surface` | `#FFFCF8` | `#161412` | 卡片/顶栏 |
+| `--bg-muted` | `#EFEBE3` | `#221F1C` | Chip/表头 |
+| `--text-primary` | `#1A1A1A` | `#F5F0E8` | 正文 |
+| `--text-secondary` | `#5C5A55` | `#A39E94` | 元信息 |
+| `--border-subtle` | `#E2DDD3` | `#2C2925` | 边线 |
+| `--accent` | `#1A7A68` | `#3DDCB0` | 链接/主按钮 |
+| `--accent-soft` | `#E4F2EE` | `#12352F` | 选中 Chip |
+| `--level-l1` | `#2F6F4E` | `#5EE9B5` | 入门 |
+| `--level-l2` | `#9A6B12` | `#E4B84A` | 进阶 |
+| `--level-l3` | `#8B3A3A` | `#F07178` | 精读 |
+| `--focus-ring` | `#1A7A68` | `#3DDCB0` | 键盘焦点 2px |
+
+### 3.2 Warm Editorial 方向 C（现行）
+
+UI-web + Salt 确认用这一套，不用 Godly/zinc（`#09090B` / `#121214` / `#2DD4BF`）。浅色只改 surface 与 accent；focus-ring 跟随 accent。深色整组替换 `html[data-theme="dark"]`：
+
+```css
+html[data-theme="dark"] {
+  --bg-canvas: #0C0B0A;
+  --bg-surface: #161412;
+  --bg-muted: #221F1C;
+  --text-primary: #F5F0E8;
+  --text-secondary: #A39E94;
+  --border-subtle: #2C2925;
+  --accent: #3DDCB0;
+  --accent-soft: #12352F;
+  --level-beginner: #5EE9B5;
+  --level-intermediate: #E4B84A;
+  --level-advanced: #F07178;
+  --focus-ring: #3DDCB0;
+  --shadow: 0 16px 48px rgb(0 0 0 / .55);
+}
+```
+
+浅色改动：`--bg-surface: #FFFCF8`；`--accent` 与 `--focus-ring: #1A7A68`。
 
 配套：`--radius-sm/md/lg` = 6/10/16；间距 4 的倍数（8–48）；正文 16–18px / 行高 ~1.7。  
 `ThemeToggle` 写入 `localStorage`；跟随系统为 P1。

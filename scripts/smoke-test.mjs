@@ -17,10 +17,14 @@ for (const slug of ['ledger-hears-no-coins', 'tide-goes-out', 'shelf-vs-hotpot',
 const index = read('terms/index.html');
 assert.equal((index.match(/class="term-row"/g) || []).length, 9, 'nine terms extracted from three stories');
 assert.match(index, /data-scene=/); assert.match(index, /data-difficulty=/); assert.match(index, /data-tag=/); assert.match(index, /name="difficulty"/);
+assert.match(index, /data-term-search/); assert.match(index, /name="q"/);
+assert.match(index, /data-search="[^"]*应急金[^"]*三个罐子/);
+assert.doesNotMatch(read('series/first-paycheck/index.html'), /data-term-search/, 'search stays off series pages');
 const js = read('assets/site.js');
-for (const term of ['URLSearchParams', 'localStorage', 'history.replaceState', "params.get('difficulty')", "params.append('tag'", 'popstate']) assert.ok(js.includes(term), `JS has ${term}`);
+for (const term of ['URLSearchParams', 'localStorage', 'history.replaceState', "params.get('difficulty')", "params.get('q')", "params.set('q'", "params.append('tag'", 'popstate', 'data-term-search']) assert.ok(js.includes(term), `JS has ${term}`);
 const css = read('assets/site.css');
-for (const token of ['--bg-canvas: #F7F5F0', '--bg-canvas: #12141A', '--bg-surface: #FFFFFF', '--bg-surface: #1A1D26', '--bg-muted: #EFEBE3', '--bg-muted: #242833', '--text-primary: #1A1A1A', '--text-primary: #F2F0EA', '--text-secondary: #5C5A55', '--text-secondary: #A8A59C', '--border-subtle: #E2DDD3', '--border-subtle: #2E3340', '--accent: #1F6B5C', '--accent: #3D9B88', '--accent-soft: #E4F2EE', '--accent-soft: #1A3330', '--level-beginner', '--level-intermediate', '--level-advanced', '--focus-ring', '--radius-sm: 6px', '--radius-md: 10px', '--radius-lg: 16px']) assert.ok(css.includes(token), `CSS token ${token}`);
+for (const token of ['--bg-canvas: #F7F5F0', '--bg-canvas: #0C0B0A', '--bg-surface: #FFFCF8', '--bg-surface: #161412', '--bg-muted: #EFEBE3', '--bg-muted: #221F1C', '--text-primary: #1A1A1A', '--text-primary: #F5F0E8', '--text-secondary: #5C5A55', '--text-secondary: #A39E94', '--border-subtle: #E2DDD3', '--border-subtle: #2C2925', '--accent: #1A7A68', '--accent: #3DDCB0', '--accent-soft: #E4F2EE', '--accent-soft: #12352F', '--level-beginner: #5EE9B5', '--level-intermediate: #E4B84A', '--level-advanced: #F07178', '--focus-ring: #1A7A68', '--focus-ring: #3DDCB0', '--radius-sm: 6px', '--radius-md: 10px', '--radius-lg: 16px', '--shadow: 0 16px 48px rgb(0 0 0 / .55)']) assert.ok(css.includes(token), `CSS token ${token}`);
+assert.doesNotMatch(css, /#09090B|#121214|#2DD4BF|#27272A/, 'no zinc dark tokens');
 assert.match(css, /prefers-reduced-motion/); assert.match(css, /:focus-visible/);
 for (const slug of ['new-ship-and-resale', 'three-jars', 'mortgage-leverage']) {
   const story = read(`story/${slug}/index.html`);
