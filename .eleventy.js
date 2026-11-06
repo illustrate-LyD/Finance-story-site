@@ -78,19 +78,23 @@ function loadContent() {
   });
   const readableSeries = seriesModels.filter((s) => s.publishedStories.length > 0);
   const preparingSeries = seriesModels.filter((s) => s.publishedStories.length === 0);
-  const featuredRank = (story) => {
-    const flag = story.featured;
-    if (flag === 'primary') return 0;
-    if (flag === true || flag === 'true') return 1;
-    return 2;
+  const seriesOrder = Object.fromEntries(series.map((item) => [item.slug || item.id, item.order ?? 99]));
+  const byStable = (a, b) => {
+    const order = (seriesOrder[a.seriesSlug] ?? 99) - (seriesOrder[b.seriesSlug] ?? 99);
+    return order || a.slug.localeCompare(b.slug);
   };
-  const publishedOrder = [...stories].sort((a, b) => {
-    const rank = featuredRank(a) - featuredRank(b);
-    if (rank) return rank;
-    return String(b.updatedAt || '').localeCompare(String(a.updatedAt || ''));
-  });
-  const featured = publishedOrder[0] || null;
-  const continueReads = featured ? publishedOrder.filter((story) => story.slug !== featured.slug).slice(0, 4) : [];
+  const isPrimary = (story) => story.featured === 'primary';
+  const isFeatured = (story) => isPrimary(story) || story.featured === true || story.featured === 'true';
+  const primaries = stories.filter(isPrimary).sort(byStable);
+  const flagged = stories.filter((story) => isFeatured(story) && !isPrimary(story)).sort(byStable);
+  // Only the first primary wins. Until a flag exists, the home slot stays three-jars.
+  const featured = primaries[0] || flagged[0] || stories.find((story) => story.slug === 'three-jars') || stories[0] || null;
+  const continueReads = stories.filter((story) => featured && story.slug !== featured.slug)
+    .sort((a, b) => {
+      const rank = (isPrimary(a) ? 0 : isFeatured(a) ? 1 : 2) - (isPrimary(b) ? 0 : isFeatured(b) ? 1 : 2);
+      return rank || byStable(a, b);
+    })
+    .slice(0, 4);
   const termMap = new Map();
   stories.forEach((story) => story.terms.forEach((term) => {
     const existing = termMap.get(term.name);
