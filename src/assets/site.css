@@ -9,11 +9,11 @@
   --shadow: 0 8px 28px rgb(26 26 26 / .05);
 }
 html[data-theme="dark"] {
-  --bg-canvas: #0C0B0A; --bg-surface: #161412; --bg-muted: #221F1C;
-  --text-primary: #F5F0E8; --text-secondary: #A39E94; --border-subtle: #2C2925;
-  --accent: #3DDCB0; --accent-soft: #12352F; --level-beginner: #5EE9B5;
-  --level-intermediate: #E4B84A; --level-advanced: #F07178; --focus-ring: #3DDCB0;
-  --shadow: 0 16px 48px rgb(0 0 0 / .55);
+  --bg-canvas: #09090B; --bg-surface: #121214; --bg-muted: #1C1C1F;
+  --text-primary: #FAFAFA; --text-secondary: #A1A1AA; --border-subtle: #27272A;
+  --accent: #2DD4BF; --accent-soft: #0E3330; --level-beginner: #34D399;
+  --level-intermediate: #FBBF24; --level-advanced: #F87171; --focus-ring: #2DD4BF;
+  --shadow: 0 8px 28px rgb(0 0 0 / .45);
 }
 :root { color-scheme: light; } html[data-theme="dark"] { color-scheme: dark; }
 * { box-sizing: border-box; } html { scroll-behavior: smooth; scroll-padding-top: 96px; }
