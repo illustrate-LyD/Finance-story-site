@@ -2,35 +2,117 @@
   "reader": "有一点投资经验",
   "axes": {
     "series": {
-      "name": "场景系列", "role": "主轴·导航，每篇恰好一个",
+      "name": "场景系列",
+      "role": "主轴·导航，每篇恰好一个",
       "items": [
-        {"id":"markets-cycles","title":"市场与周期","batch":1},
-        {"id":"first-paycheck","title":"第一笔工资","batch":1},
-        {"id":"home-and-debt","title":"买房与负债","batch":1},
-        {"id":"family-protection","title":"家庭保障","batch":2},
-        {"id":"running-a-business","title":"做生意","batch":2},
-        {"id":"retirement-legacy","title":"养老与传承","batch":2}
+        {
+          "id": "markets-cycles",
+          "title": "市场与周期",
+          "batch": 1
+        },
+        {
+          "id": "first-paycheck",
+          "title": "第一笔工资",
+          "batch": 1
+        },
+        {
+          "id": "home-and-debt",
+          "title": "买房与负债",
+          "batch": 1
+        },
+        {
+          "id": "family-protection",
+          "title": "家庭保障",
+          "batch": 2
+        },
+        {
+          "id": "running-a-business",
+          "title": "做生意",
+          "batch": 2
+        },
+        {
+          "id": "retirement-legacy",
+          "title": "养老与传承",
+          "batch": 2
+        },
+        {
+          "id": "investor-ideas",
+          "title": "名人投资理念",
+          "batch": 1,
+          "summary": "公开投资思想笔记：事实叙述，非寓言",
+          "format_default": "brief"
+        }
       ]
     },
     "tags": {
-      "name": "知识域标签", "role": "筛选用，可多选 OR",
+      "name": "知识域标签",
+      "role": "筛选用，可多选 OR",
       "items": [
-        {"id":"投资","summary":"资产配置、基金/股票/债券产品与持有逻辑"},
-        {"id":"保险","summary":"保障型产品、保额/保费与风险转移"},
-        {"id":"宏观","summary":"利率、通胀、央行、政策与周期"},
-        {"id":"微观","summary":"公司质地、财报直觉、行业与商业模式"},
-        {"id":"交易","summary":"买卖机制、流动性、订单与情绪（非荐股）"}
+        {
+          "id": "投资",
+          "summary": "资产配置、基金/股票/债券产品与持有逻辑"
+        },
+        {
+          "id": "保险",
+          "summary": "保障型产品、保额/保费与风险转移"
+        },
+        {
+          "id": "宏观",
+          "summary": "利率、通胀、央行、政策与周期"
+        },
+        {
+          "id": "微观",
+          "summary": "公司质地、财报直觉、行业与商业模式"
+        },
+        {
+          "id": "交易",
+          "summary": "买卖机制、流动性、订单与情绪（非荐股）"
+        }
       ]
     },
     "difficulty": {
-      "name": "难度", "role": "第三轴，每篇恰好一个；L1–L3，展示入门/进阶/精读",
+      "name": "难度",
+      "role": "第三轴，每篇恰好一个；L1–L3，展示入门/进阶/精读",
       "items": [
-        {"id":"L1","display":"入门","source":"L1","label":"入门","definition":"一个核心概念；比喻能独立讲清；少公式"},
-        {"id":"L2","display":"进阶","source":"L2","label":"进阶","definition":"2–4 个概念串联；常见误区与边界"},
-        {"id":"L3","display":"精读","source":"L3","label":"精读","definition":"机制+反例+系列交叉；简单数字推演"}
+        {
+          "id": "L1",
+          "display": "入门",
+          "source": "L1",
+          "label": "入门",
+          "definition": "一个核心概念；比喻能独立讲清；少公式"
+        },
+        {
+          "id": "L2",
+          "display": "进阶",
+          "source": "L2",
+          "label": "进阶",
+          "definition": "2–4 个概念串联；常见误区与边界"
+        },
+        {
+          "id": "L3",
+          "display": "精读",
+          "source": "L3",
+          "label": "精读",
+          "definition": "机制+反例+系列交叉；简单数字推演"
+        }
       ]
     }
   },
-  "launch_series":["markets-cycles","first-paycheck","home-and-debt"],
-  "query":{"scene":"系列 slug 或空=全部","tag":"投资|保险|宏观|微观|交易，可重复，OR","difficulty":"L1|L2|L3或空=全部"}
+  "launch_series": [
+    "markets-cycles",
+    "first-paycheck",
+    "home-and-debt"
+  ],
+  "query": {
+    "scene": "系列 slug 或空=全部",
+    "tag": "投资|保险|宏观|微观|交易，可重复，OR",
+    "difficulty": "L1|L2|L3或空=全部"
+  },
+  "iteration_series": [
+    "investor-ideas"
+  ],
+  "format": {
+    "story": "寓言/场景故事（默认）",
+    "brief": "事实与公开理念叙述，不用小故事；术语表/实例可选"
+  }
 }

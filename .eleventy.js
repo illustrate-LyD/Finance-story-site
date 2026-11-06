@@ -19,7 +19,9 @@ const pathPrefix = normalizePathPrefix(process.env.PATH_PREFIX || '/');
 function loadContent() {
   const series = fs.readdirSync(path.join(root, 'content/series')).filter((f) => f.endsWith('.md')).map((filename) => {
     const parsed = matter(read(`content/series/${filename}`));
-    return { ...parsed.data, slug: parsed.data.slug || parsed.data.id, format: parsed.data.format === 'brief' ? 'brief' : 'story', description: parsed.content.trim() };
+    const rawFormat = parsed.data.format || parsed.data.format_default;
+    const description = parsed.content.trim();
+    return { ...parsed.data, slug: parsed.data.slug || parsed.data.id, format: rawFormat === 'brief' ? 'brief' : 'story', description, descriptionHtml: description ? md.render(description) : '' };
   }).sort((a, b) => a.order - b.order);
   const storyDir = path.join(root, 'content/stories');
   const stories = fs.existsSync(storyDir) ? fs.readdirSync(storyDir).filter((f) => f.endsWith('.md')).map((filename) => {

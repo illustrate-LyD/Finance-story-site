@@ -86,5 +86,94 @@
       "流动性风险",
       "资产负债匹配"
     ]
+  },
+  {
+    "slug": "juglar-vs-kitchin",
+    "title": "库存的浪花与设备的潮",
+    "seriesSlug": "markets-cycles",
+    "difficulty": "L2",
+    "tags": [
+      "宏观",
+      "投资"
+    ],
+    "topics": [
+      "基钦周期",
+      "朱格拉周期",
+      "与康波尺度对照"
+    ]
+  },
+  {
+    "slug": "debt-supercycle-sketch",
+    "title": "债台与水位线",
+    "seriesSlug": "markets-cycles",
+    "difficulty": "L3",
+    "tags": [
+      "宏观",
+      "投资"
+    ],
+    "topics": [
+      "长债务周期叙事",
+      "杠杆",
+      "去杠杆"
+    ]
+  },
+  {
+    "slug": "soros-reflexivity",
+    "title": "索罗斯：反射性与盛衰序列",
+    "seriesSlug": "investor-ideas",
+    "difficulty": "L2",
+    "tags": [
+      "投资",
+      "宏观"
+    ],
+    "topics": [
+      "反射性",
+      "盛衰序列",
+      "偏见与价格"
+    ]
+  },
+  {
+    "slug": "duan-buy-good-wait",
+    "title": "段永平：买好的、等等、少动作",
+    "seriesSlug": "investor-ideas",
+    "difficulty": "L1",
+    "tags": [
+      "投资",
+      "微观"
+    ],
+    "topics": [
+      "好生意",
+      "等待",
+      "集中与不懂不做"
+    ]
+  },
+  {
+    "slug": "graham-mr-market",
+    "title": "格雷厄姆：市场先生与安全边际源流",
+    "seriesSlug": "investor-ideas",
+    "difficulty": "L1",
+    "tags": [
+      "投资"
+    ],
+    "topics": [
+      "市场先生",
+      "安全边际",
+      "清算价值直觉"
+    ]
+  },
+  {
+    "slug": "lynch-know-what-you-own",
+    "title": "彼得·林奇：只买你懂的生意",
+    "seriesSlug": "investor-ideas",
+    "difficulty": "L1",
+    "tags": [
+      "投资",
+      "微观"
+    ],
+    "topics": [
+      "生活中的投资线索",
+      "分类框架",
+      "能力圈"
+    ]
   }
 ]

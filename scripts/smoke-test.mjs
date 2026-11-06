@@ -4,18 +4,19 @@ import path from 'node:path';
 const out = path.resolve('_site');
 const read = (p) => { assert.ok(fs.existsSync(path.join(out, p)), `missing ${p}`); return fs.readFileSync(path.join(out, p), 'utf8'); };
 const home = read('index.html');
-assert.equal((home.match(/class="series-card/g) || []).length, 6, 'home has six series cards');
-assert.equal((home.match(/class="story-card /g) || []).length, 3, 'all three complete stories featured');
-for (const slug of ['markets-cycles', 'first-paycheck', 'home-and-debt', 'family-protection', 'running-a-business', 'retirement-legacy']) {
+assert.equal((home.match(/class="series-card/g) || []).length, 7, 'home has seven series cards');
+assert.match(home, /名人投资理念/);
+assert.equal((home.match(/class="story-card /g) || []).length, 5, 'five published pieces featured');
+for (const slug of ['markets-cycles', 'first-paycheck', 'home-and-debt', 'family-protection', 'running-a-business', 'retirement-legacy', 'investor-ideas']) {
   const page = read(`series/${slug}/index.html`);
   assert.match(page, /data-filter-form/);
 }
 // Planned stories are non-clickable cards only.
-for (const slug of ['ledger-hears-no-coins', 'tide-goes-out', 'shelf-vs-hotpot', 'sleep-well-size', 'fixed-vs-floating', 'duration-mismatch']) {
+for (const slug of ['ledger-hears-no-coins', 'tide-goes-out', 'shelf-vs-hotpot', 'sleep-well-size', 'fixed-vs-floating', 'duration-mismatch', 'juglar-vs-kitchin', 'debt-supercycle-sketch', 'soros-reflexivity', 'duan-buy-good-wait', 'graham-mr-market', 'lynch-know-what-you-own']) {
   assert.ok(!fs.existsSync(path.join(out, `story/${slug}/index.html`)), `planned ${slug} has no fake story page`);
 }
 const index = read('terms/index.html');
-assert.equal((index.match(/class="term-row"/g) || []).length, 9, 'nine terms extracted from three stories');
+assert.equal((index.match(/class="term-row"/g) || []).length, 15, 'fifteen terms from five published pieces');
 assert.match(index, /data-scene=/); assert.match(index, /data-difficulty=/); assert.match(index, /data-tag=/); assert.match(index, /name="difficulty"/);
 assert.match(index, /data-term-search/); assert.match(index, /name="q"/);
 assert.match(index, /data-search="[^"]*应急金[^"]*三个罐子/);
@@ -51,5 +52,21 @@ assert.doesNotMatch(paycheck, /scene-chip" href="\/series\/first-paycheck\/">市
 const jars = read('story/three-jars/index.html');
 assert.match(jars, /返回系列 · 第一笔工资/);
 assert.doesNotMatch(jars, /返回系列 · 市场与周期|story\/new-ship-and-resale/, 'three-jars related stays in first-paycheck');
+const ideas = read('series/investor-ideas/index.html');
+assert.match(ideas, /篇理念/);
+assert.match(ideas, /索罗斯：反射性与盛衰序列/);
+assert.doesNotMatch(ideas, /篇故事|篇完整故事/);
+const brief = read('story/buffett-moat-margin/index.html');
+const briefToc = brief.match(/<nav class="story-toc"[\s\S]*?<\/nav>/)?.[0] || '';
+assert.match(briefToc, /href="#story">正文/);
+assert.doesNotMatch(briefToc, /故事/, 'brief TOC has no 故事 label');
+assert.match(brief, /<h2><span class="section-number">01<\/span>正文<\/h2>/);
+assert.match(brief, /文中对应/);
+assert.match(brief, /经济护城河/);
+assert.match(brief, /class="term-table"/);
+const wave = read('story/kondratiev-long-wave/index.html');
+assert.match(wave, /href="#story">故事/);
+assert.match(wave, /康波周期/);
+assert.match(wave, /潮汐表上的「大潮」刻度/);
 
 console.log('P0 smoke tests: PASS — 13 routes, 6 series, 3 source stories, 9 terms, tokens and URL/theme scripts verified.');
