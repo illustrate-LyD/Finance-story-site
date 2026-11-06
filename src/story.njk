@@ -11,7 +11,7 @@ eleventyComputed:
 ---
 {% from "components.njk" import levelBadge, tags, storyCard %}
 {% set series = contentData.seriesBySlug[story.seriesSlug] %}
-{% set bodyLabel = '正文' if story.format == 'brief' else '故事' %}
+{% set bodyLabel = '理念' if story.format == 'brief' else '故事' %}
 {% set correspondLabel = '文中对应' if story.format == 'brief' else '故事里对应' %}
 {% set correspondFallback = '见正文中的对应表述' if story.format == 'brief' else '见故事正文中的对应比喻' %}
 {% set moreLabel = '理念与预告' if series.format == 'brief' else '故事与预告' %}

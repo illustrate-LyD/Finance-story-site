@@ -5,7 +5,7 @@
 {% endmacro %}
 {% macro storyCard(story, seriesItems) %}
 <article class="story-card {% if story.planned %}planned{% endif %}" data-story data-scene="{{ story.seriesSlug }}" data-tags="{{ story.tags | join(',') }}" data-difficulty="{{ story.level }}">
-<div class="card-meta"><a class="scene-chip" href="{{ ('/series/' + story.seriesSlug + '/') | url }}">{{ (seriesItems | bySlug(story.seriesSlug)).title }}</a>{{ levelBadge(story.level) }}</div>
+<div class="card-meta">{% if story.format == 'brief' %}<span class="format-badge">理念</span>{% endif %}<a class="scene-chip" href="{{ ('/series/' + story.seriesSlug + '/') | url }}">{{ (seriesItems | bySlug(story.seriesSlug)).title }}</a>{{ levelBadge(story.level) }}</div>
 {% if story.planned %}<h3>{{ story.title }}</h3><p class="coming-label">大纲预告 · 正文待供稿</p>{% else %}<h3><a href="{{ story.url | url }}">{{ story.title }}</a></h3>{% endif %}<p>{{ story.hook }}</p>{{ tags(story.tags) }}</article>
 {% endmacro %}
 {% macro filterBar(scene='', index=false, seriesItems=[], tagItems=[]) %}
