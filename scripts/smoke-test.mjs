@@ -41,4 +41,11 @@ assert.doesNotMatch(termTable, /见故事正文中的对应比喻/, 'no context 
 assert.match(read('index/index.html'), /url=\/terms\//);
 assert.doesNotMatch(read('story/new-ship-and-resale/index.html'), /href="\/index\//);
 assert.doesNotMatch(read('series/markets-cycles/index.html'), /name="level"|name="difficulty" value="[初中高]"/);
+const paycheck = read('series/first-paycheck/index.html');
+assert.match(paycheck, /chip selected locked[\s\S]*第一笔工资/, 'first-paycheck locked chip title');
+assert.doesNotMatch(paycheck, /scene-chip" href="\/series\/first-paycheck\/">市场与周期/, 'no cross-wired series chip');
+const jars = read('story/three-jars/index.html');
+assert.match(jars, /返回系列 · 第一笔工资/);
+assert.doesNotMatch(jars, /返回系列 · 市场与周期|story\/new-ship-and-resale/, 'three-jars related stays in first-paycheck');
+
 console.log('P0 smoke tests: PASS — 13 routes, 6 series, 3 source stories, 9 terms, tokens and URL/theme scripts verified.');

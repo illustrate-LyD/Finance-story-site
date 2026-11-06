@@ -70,7 +70,8 @@ function loadContent() {
     else termMap.set(term.name, { id: term.name, name: term.name, alias: term.alias || [], definition: term.definition,
       storySlugs: [story.slug], stories: [story], scenes: [story.seriesSlug], tags: [...story.tags], levels: [story.level] });
   }));
-  return { series: seriesModels, stories, allStories, terms: [...termMap.values()], levelMap };
+  const seriesBySlug = Object.fromEntries(seriesModels.map((s) => [s.slug, s]));
+  return { series: seriesModels, stories, allStories, terms: [...termMap.values()], levelMap, seriesBySlug };
 }
 module.exports = function(eleventyConfig) {
   const data = loadContent();
@@ -84,6 +85,7 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addFilter('pluck', (items, key) => items.map((item) => item[key]));
   eleventyConfig.addFilter('json', (value) => JSON.stringify(value));
   eleventyConfig.addFilter('dateCN', (value) => String(value).slice(0, 10));
+  eleventyConfig.addFilter('bySlug', (items, slug) => (items || []).find((item) => item.slug === slug));
   eleventyConfig.addPassthroughCopy('src/assets', '/assets');
   eleventyConfig.addWatchTarget('content/');
   return {

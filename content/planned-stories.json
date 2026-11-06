@@ -1,10 +1,90 @@
 [
-  {"slug":"ledger-hears-no-coins","title":"账房听不见的叮当声","seriesSlug":"markets-cycles","difficulty":"L2","tags":["投资","微观"],"topics":["市值≠账面现金","二级定价对一级的锚定","增发/老股转让谁拿到钱"]},
-  {"slug":"tide-goes-out","title":"退潮才看见谁没穿泳裤","seriesSlug":"markets-cycles","difficulty":"L2","tags":["宏观","投资"],"topics":["周期","杠杆放大","流动性收缩","预期差"]},
-  {"slug":"three-jars","title":"三个罐子","seriesSlug":"first-paycheck","difficulty":"L1","tags":["投资"],"topics":["应急金","强制储蓄","消费/投资分账"]},
-  {"slug":"shelf-vs-hotpot","title":"超市货架与自助火锅","seriesSlug":"first-paycheck","difficulty":"L1","tags":["投资"],"topics":["主动/被动","费率","指数基金直觉"]},
-  {"slug":"sleep-well-size","title":"能睡得着的仓位","seriesSlug":"first-paycheck","difficulty":"L2","tags":["投资"],"topics":["风险承受力 vs 风险偏好","回撤与持有期"]},
-  {"slug":"mortgage-leverage","title":"用明天的粮票买今天的仓","seriesSlug":"home-and-debt","difficulty":"L1","tags":["投资","宏观"],"topics":["杠杆","本金/利息","月供刚性"]},
-  {"slug":"fixed-vs-floating","title":"固定与浮动的天气赌局","seriesSlug":"home-and-debt","difficulty":"L2","tags":["宏观","投资"],"topics":["利率风险","久期直觉","提前还款取舍"]},
-  {"slug":"duration-mismatch","title":"短债长投的裂痕","seriesSlug":"home-and-debt","difficulty":"L2","tags":["投资","宏观"],"topics":["期限错配","流动性风险","资产负债匹配"]}
+  {
+    "slug": "ledger-hears-no-coins",
+    "title": "账房听不见的叮当声",
+    "seriesSlug": "markets-cycles",
+    "difficulty": "L2",
+    "tags": [
+      "投资",
+      "微观"
+    ],
+    "topics": [
+      "市值≠账面现金",
+      "二级定价对一级的锚定",
+      "增发/老股转让谁拿到钱"
+    ]
+  },
+  {
+    "slug": "tide-goes-out",
+    "title": "退潮才看见谁没穿泳裤",
+    "seriesSlug": "markets-cycles",
+    "difficulty": "L2",
+    "tags": [
+      "宏观",
+      "投资"
+    ],
+    "topics": [
+      "周期",
+      "杠杆放大",
+      "流动性收缩",
+      "预期差"
+    ]
+  },
+  {
+    "slug": "shelf-vs-hotpot",
+    "title": "超市货架与自助火锅",
+    "seriesSlug": "first-paycheck",
+    "difficulty": "L1",
+    "tags": [
+      "投资"
+    ],
+    "topics": [
+      "主动/被动",
+      "费率",
+      "指数基金直觉"
+    ]
+  },
+  {
+    "slug": "sleep-well-size",
+    "title": "能睡得着的仓位",
+    "seriesSlug": "first-paycheck",
+    "difficulty": "L2",
+    "tags": [
+      "投资"
+    ],
+    "topics": [
+      "风险承受力 vs 风险偏好",
+      "回撤与持有期"
+    ]
+  },
+  {
+    "slug": "fixed-vs-floating",
+    "title": "固定与浮动的天气赌局",
+    "seriesSlug": "home-and-debt",
+    "difficulty": "L2",
+    "tags": [
+      "宏观",
+      "投资"
+    ],
+    "topics": [
+      "利率风险",
+      "久期直觉",
+      "提前还款取舍"
+    ]
+  },
+  {
+    "slug": "duration-mismatch",
+    "title": "短债长投的裂痕",
+    "seriesSlug": "home-and-debt",
+    "difficulty": "L2",
+    "tags": [
+      "投资",
+      "宏观"
+    ],
+    "topics": [
+      "期限错配",
+      "流动性风险",
+      "资产负债匹配"
+    ]
+  }
 ]
