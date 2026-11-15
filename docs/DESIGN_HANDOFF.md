@@ -98,88 +98,162 @@ Nibble：`format` 缺省 = `story`；brief 时 Toc 第一项 label=`理念`，�
 
 ## 3. 深浅色 Token
 
-切换只改 `data-theme`，组件不写死色值。深色按 Dong 反馈 #1 重做（Warm Editorial）；浅色仅微调 surface/accent。
+切换只改 `data-theme`，组件不写死色值。
 
-### 3.1 浅色（沿用）
+**2026-11-15**：Dong 不满意现网深色（Warm Editorial C），要求**整案重做**，不要在 C 上小修。新方案采用方向 **D · Cool Ink Press（墨栏）**。目标是耐看的深色阅读，而不是再铺一层暖色滤镜。浅色纸色与结构保留，仅把 accent 从青绿改为同族青铜，保证深浅是一套系统。
+
+预览稿（非现网）：`docs/_preview/theme-d-cool-ink.html`（截图 `theme-d-hero.png` / `theme-d-full.png`）。
+
+### 3.1 浅色（结构沿用，accent 对齐 D）
 
 | Token | light | 用途 |
 |-------|-------|------|
-| `--bg-canvas` | `#F7F5F0` | 页底 |
-| `--bg-surface` | `#FFFCF8` | 卡片/顶栏（暖白，与 §3.2 一致） |
+| `--bg-canvas` | `#F7F5F0` | 页底（暖纸，不变） |
+| `--bg-surface` | `#FFFCF8` | 卡片/顶栏 |
 | `--bg-muted` | `#EFEBE3` | Chip/表头 |
 | `--text-primary` | `#1A1A1A` | 正文 |
 | `--text-secondary` | `#5C5A55` | 元信息 |
 | `--border-subtle` | `#E2DDD3` | 边线 |
-| `--accent` | `#1A7A68` | 链接/主按钮（与现网一致） |
-| `--accent-soft` | `#E4F2EE` | 选中 Chip |
-| `--level-l1` / `--level-beginner` | `#2F6F4E` | 入门 |
-| `--level-l2` / `--level-intermediate` | `#9A6B12` | 进阶 |
-| `--level-l3` / `--level-advanced` | `#8B3A3A` | 精读 |
+| `--accent` | `#6B4F1A` ← 自 `#1A7A68` 改为青铜 | 链接/眉题/选中字 |
+| `--accent-soft` | `#F0E6D0` ← 自薄荷绿改 | 选中 Chip |
+| `--level-beginner` | `#2F6F4E` | 入门 |
+| `--level-intermediate` | `#9A6B12` | 进阶 |
+| `--level-advanced` | `#8B3A3A` | 精读 |
 | `--focus-ring` | = accent | 键盘焦点 |
+| `--shadow` | `0 8px 28px rgb(26 26 26 / .05)` | 下拉抬升 |
+| `--button-primary-bg` | `#1A1A1A` | 浅色主按钮：墨底纸字（与深色浅钢对仗） |
+| `--button-primary-fg` | `#FFFCF8` | 主按钮字色 |
 
-### 3.2 深色重做（Dong 反馈 #1 · 杂志感）
+浅色主按钮不再用青绿填充，改墨色实心，避免切回深色时「一边绿、一边金」。
 
-现网深色偏「普通 zinc 模板」。下列三向短评后，**采用方向 C**。
+### 3.2 深色重做（2026-11-15 · 方向 D）
 
-#### 三向短评
+#### 已弃方案（不要退回）
 
-| 方向 | 参考 | 气质 | 评价 |
-|------|------|------|------|
-| A · Cold Gallery | Godly、v0、Bolt 系近黑+青 | 画廊克制、对比极强 | 干净，但易像 AI 默认深色；长文略冷硬 |
-| B · Product Slate | Refero、Mobbin、Lovable 系蓝灰 | 产品/后台感 | 筛选区舒服，故事站缺「刊物」温度 |
-| **C · Warm Editorial（推荐）** | Awwwards 编辑向、Land-book 青绿、WebSim/same 实验站的纸感暗页 | 暖炭黑 + 奶油字 + 青绿点缀 | 适合寓言长文；有辨识度又不花哨 |
+| 方案 | Token 特征 | 为什么弃 |
+|------|------------|----------|
+| 初版 zinc | `#09090B` / `#2DD4BF` | 普通 AI/SaaS 深色模板 |
+| C · Warm Editorial | `#0C0B0A` / `#F5F0E8` / `#3DDCB0` | 整页暖褐+奶油字，是一层暖色滤镜；青绿强调仍像模板 |
 
-#### 推荐：方向 C — Warm Editorial Dark
+#### 参考（只取原则，不抄品牌色值）
 
-浅色：**微调**（见下），不大改结构。
+| 来源 | 取 | 不取 |
+|------|----|------|
+| Linear | 近黑画布几乎无色相；层级靠亮度台阶；发丝边约 8% 白；主按钮常用浅钢，品牌色不铺满 | 靛紫 `#5E6AD2`（会像再套一个产品站） |
+| Vercel | 高对比、无染色、字是主角 | 纯 `#000` 广告黑、无编辑气质 |
+| Stripe | 略偏蓝黑的墨底，比纯灰更有空气 | 后台海军大色块、仪表盘密度 |
+| Bloomberg / 财经阅读 | 黑底不暖化；强调色跨深浅保持同一色相；标题字重约 600，不靠加粗喊 | 终端橙、密集行情条 |
+| 明确不做 | — | FT 鲑鱼正文（又是暖色字）；渐变、发光描边、大面积彩色底 |
 
-| Token | dark C（推荐） | light 微调 | 用途 |
-|-------|----------------|------------|------|
-| `--bg-canvas` | `#0C0B0A` | `#F7F5F0`（不变） | 页底：暖炭黑 / 暖纸 |
-| `--bg-surface` | `#161412` | `#FFFcf8` ← 略暖白 | 顶栏、卡片、Filter |
-| `--bg-muted` | `#221F1C` | `#EFEBE3`（不变） | Chip 底、表头、Toc |
-| `--text-primary` | `#F5F0E8` | `#1A1A1A`（不变） | 奶油墨 / 暖墨 |
-| `--text-secondary` | `#A39E94` | `#5C5A55`（不变） | 元信息 |
-| `--border-subtle` | `#2C2925` | `#E2DDD3`（不变） | 发丝边 |
-| `--accent` | `#3DDCB0` | `#1A7A68` ← 略提亮对齐深色 | 链接、主按钮、选中字 |
-| `--accent-soft` | `#12352F` | `#E4F2EE`（不变） | 选中 Chip / Segmented |
-| `--level-beginner` | `#5EE9B5` | `#2F6F4E` | 入门 |
-| `--level-intermediate` | `#E4B84A` | `#9A6B12` | 进阶 |
-| `--level-advanced` | `#F07178` | `#8B3A3A` | 精读 |
-| `--focus-ring` | `#3DDCB0` | = accent | 焦点 |
-| `--shadow` | `0 16px 48px rgb(0 0 0 / .55)` | `0 8px 28px rgb(26 26 26 / .05)` | 可选抬升 |
+#### 采用：D · Cool Ink Press（墨栏）
 
-Chip 规则（深色）：默认 = muted 底 + secondary 字 + subtle 边；选中 = accent-soft 底 + accent 字 + accent 边 + font-weight 700。
+气质：**夜间书桌读财经长文**。底是凉的墨，字是凉的纸白；唯一的温度在**栏线金**（链接、眉题、选中、焦点），不进背景。标题用宋/衬线，和系统无衬线 UI 分工，阅读页更像刊物而不是后台。
 
-#### 给 Nibble 的落地清单（仅 CSS 变量 / 映射，不改 IA）
+| Token | dark D（采用） | light（对照） | 用途 |
+|-------|----------------|---------------|------|
+| `--bg-canvas` | `#0A0C10` | `#F7F5F0` | 页底：凉墨 / 暖纸 |
+| `--bg-surface` | `#12151B` | `#FFFCF8` | 顶栏、卡片、Filter |
+| `--bg-muted` | `#1A1E26` | `#EFEBE3` | Chip 底、表头、Toc |
+| `--text-primary` | `#F3F5F7` | `#1A1A1A` | 纸白 / 墨（**禁止奶油 `#F5F0E8`**） |
+| `--text-secondary` | `#9AA3B0` | `#5C5A55` | 元信息（深色 7.7:1 @ canvas） |
+| `--border-subtle` | `#252A33` | `#E2DDD3` | 发丝边（也可用 `color-mix(in srgb, #fff 8%, transparent)`） |
+| `--accent` | `#E2C58D` | `#6B4F1A` | 栏线金 / 青铜；链接、眉题、选中 |
+| `--accent-soft` | `#221E16` | `#F0E6D0` | 选中 Chip、带走这几句浅底（深色几乎无色相，仅微金） |
+| `--level-beginner` | `#6FCF9F` | `#2F6F4E` | 入门 |
+| `--level-intermediate` | `#E0B25A` | `#9A6B12` | 进阶 |
+| `--level-advanced` | `#E07A7A` | `#8B3A3A` | 精读 |
+| `--focus-ring` | `#E2C58D` | = accent | 焦点 |
+| `--shadow` | `0 16px 48px rgb(0 0 0 / .55)` | `0 8px 28px rgb(26 26 26 / .05)` | 下拉 |
+| `--button-primary-bg` | `#E8EAED` | `#1A1A1A` | 深色主按钮=浅钢；浅色=墨 |
+| `--button-primary-fg` | `#0A0C10` | `#FFFCF8` | 主按钮字色 |
 
-1. 替换 `html[data-theme="dark"] { … }` 为上表 dark C 值（含 `--level-*` 与 `--shadow`）。
-2. 浅色 `:root`：仅改 `--bg-surface: #FFFcf8`、`--accent: #1A7A68`（及 `--focus-ring` 跟 accent）；其余不动。
-3. `.brand-mark` 深色：`background: var(--accent); color: var(--bg-canvas)`。
-4. AppBar：继续半透明 surface + blur；`border-bottom` 用新 `--border-subtle`。
-5. `.chip.selected` / Segmented checked：强制 `background: var(--accent-soft); color: var(--accent); border-color: var(--accent)`。
-6. `.term-table thead`、`.story-toc`：`background: var(--bg-muted)`。
-7. Hero / 故事 H1：深色下可用略暖字色（已是 `--text-primary`）；**不加渐变、不加发光描边**（避免模板感）。
-8. 对比自检：正文 `#F5F0E8` on `#0C0B0A`；链接 `#3DDCB0` on canvas/surface ≥ 3:1（大字/UI）。
-9. 推 Pages 后让 UI-web 再扫深色首页 + 故事页 + `/terms/`。
+对比（已测）：正文 `#F3F5F7` on `#0A0C10` **17.9:1**；链接 `#E2C58D` on canvas **11.8:1**；次要字 `#9AA3B0` **7.7:1**。
+
+#### 组件状态（深色，按此映射，勿保留旧青绿填充）
+
+| 组件 | 默认 | 悬停 / 选中 / 禁用 |
+|------|------|-------------------|
+| 链接 | accent，下划线 1px offset .2em | 悬停加粗到 2px；不要改成青绿或高亮发光 |
+| `.button` 主 | bg `--button-primary-bg`，字 `--button-primary-fg`，边同底，radius 6px，padding `9px 18px` | 悬停略亮（深色钢色可 `color-mix(..., #fff 6%)`）；深色**禁止**再用 accent 填满主按钮 |
+| `.button.secondary` | 透明底 + primary 字 + `--border-subtle` | 悬停边/字可转 accent |
+| Chip 默认 | canvas 底 + secondary 字 + subtle 边 | — |
+| Chip / Segmented 选中 | accent-soft 底 + accent 字 + accent 边 + weight 700 | 禁用：opacity .5，不可点档保持「筹备中」文案 |
+| `.format-badge` / 预告徽章 | 同选中 Chip 的金边金字，pill | — |
+| `.featured-pick` | surface + 左侧 **3px accent** 条（已有，保留） | 不要再加外发光 |
+| PreviewCard `.planned` | muted 底 + **dashed** 边 +「预告」徽章 | 无假链接 |
+| `.takeaways` | accent-soft 底 + 左侧 2px accent 栏线（不要整块亮金或旧薄荷绿） | — |
+| `.brand-mark` | accent 底 + canvas 字；衬线 | — |
+| `.story-toc` | muted 底、subtle 左边线；当前节 accent 字 | — |
+| AppBar | surface 90% + `blur(12px)` + subtle 底边 | — |
+| 输入 / 搜索 | canvas 底 + primary 字 + subtle 边 | 焦点：`--focus-ring` 2px offset 2–4px |
+| Hero / 故事 H1 | primary，**衬线**，字重 **600**（不要 800，不要渐变字） | — |
+
+#### 字体（深浅共用，见 §8.1）
+
+- UI / 正文：系统无衬线（PingFang SC / Hiragino / YaHei 等，根 17px / 行高 1.7；故事正文 1.02rem / 1.95）
+- 标题（`h1`、系列名、故事 H2 节题）：`--font-serif`：`"Noto Serif SC", "Songti SC", "STSong", Georgia, serif`
+- 可选：引入 [Noto Serif SC](https://fonts.google.com/noto/specimen/Noto+Serif+SC)（OFL），仅标题；未加载则走系统宋体回退，**不要为了字体阻塞上线**
+- 序号 / 等宽：`ui-monospace, SFMono-Regular, Menlo, Consolas, monospace`
+- 中文标题字距接近 0（`-0.02em` 即可），不要套拉丁标题的大负字距
+
+#### 给 Nibble 的落地清单（今晚可上线）
+
+1. 整段替换 `html[data-theme="dark"]` 为下方 D 值（含 `--button-primary-*`、`--level-*`、`--shadow`）。
+2. 浅色 `:root`：改 `--accent: #6B4F1A`、`--accent-soft: #F0E6D0`、`--focus-ring`、以及 `--button-primary-bg/fg`；纸色 token 不动。
+3. `.button` 改读 `--button-primary-*`，删掉「深色按钮字用 canvas、底用 accent」的旧规则。
+4. `.brand-mark` 深色：`background: var(--accent); color: var(--bg-canvas)`。
+5. `h1`、`.page-header h1`、`.story-header h1`、`.featured-pick h2`、内容区 `h2`：`font-family: var(--font-serif); font-weight: 600`。
+6. Chip / Segmented / badge / takeaways 按上表，清掉旧 `--accent` 实心主按钮和旧薄荷绿大色块。
+7. **禁止再出现** `#0C0B0A` `#161412` `#F5F0E8` `#3DDCB0` `#12352F` `#09090B` `#2DD4BF`。
+8. 不加渐变、发光、暖色 canvas 染色。
+9. 间距、栅格、圆角、口径（§5–§8.4 / §7）**不要重做**；只换色、字、按钮语义。
+10. 推 Pages 后让 UI-web 复扫：深色首页 + 故事页 + `/terms/` + 浅色对照一页。
 
 ```css
+/* Nibble：:root 增补（浅色） */
+:root {
+  --accent: #6B4F1A;
+  --accent-soft: #F0E6D0;
+  --focus-ring: #6B4F1A;
+  --button-primary-bg: #1A1A1A;
+  --button-primary-fg: #FFFCF8;
+  --font-serif: "Noto Serif SC", "Songti SC", "STSong", Georgia, serif;
+}
+
 /* Nibble：整段替换 dark 主题 */
 html[data-theme="dark"] {
-  --bg-canvas: #0C0B0A;
-  --bg-surface: #161412;
-  --bg-muted: #221F1C;
-  --text-primary: #F5F0E8;
-  --text-secondary: #A39E94;
-  --border-subtle: #2C2925;
-  --accent: #3DDCB0;
-  --accent-soft: #12352F;
-  --level-beginner: #5EE9B5;
-  --level-intermediate: #E4B84A;
-  --level-advanced: #F07178;
-  --focus-ring: #3DDCB0;
+  --bg-canvas: #0A0C10;
+  --bg-surface: #12151B;
+  --bg-muted: #1A1E26;
+  --text-primary: #F3F5F7;
+  --text-secondary: #9AA3B0;
+  --border-subtle: #252A33;
+  --accent: #E2C58D;
+  --accent-soft: #221E16;
+  --level-beginner: #6FCF9F;
+  --level-intermediate: #E0B25A;
+  --level-advanced: #E07A7A;
+  --focus-ring: #E2C58D;
   --shadow: 0 16px 48px rgb(0 0 0 / .55);
+  --button-primary-bg: #E8EAED;
+  --button-primary-fg: #0A0C10;
   color-scheme: dark;
+}
+
+.button {
+  background: var(--button-primary-bg);
+  color: var(--button-primary-fg);
+  border-color: var(--button-primary-bg);
+}
+html[data-theme="dark"] .button { color: var(--button-primary-fg); } /* 覆盖旧「深色按钮字=canvas」 */
+.button.secondary {
+  background: transparent;
+  color: var(--text-primary);
+  border-color: var(--border-subtle);
+}
+h1, .story-content h2, .page-header h1, .featured-pick h2, .section-heading h2 {
+  font-family: var(--font-serif);
+  font-weight: 600;
 }
 ```
 
@@ -353,16 +427,17 @@ html[data-theme="dark"] {
 
 | 角色 | 栈 | 说明 |
 |------|-----|------|
-| **正文 UI** | `-apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif` | 系统优先，中文可读 |
-| **品牌角标「知」** | `Georgia, "Noto Serif SC", serif` | 仅 `.brand-mark` |
+| **正文 UI** | `-apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", sans-serif` | 系统优先，中文可读 |
+| **标题衬线** `--font-serif` | `"Noto Serif SC", "Songti SC", "STSong", Georgia, serif` | `h1`、故事/系列 H2、主推标题；可选加载 Noto Serif SC |
+| **品牌角标「知」** | 同 `--font-serif` | `.brand-mark` |
 | **序号 / 等宽点缀** | `ui-monospace, SFMono-Regular, Menlo, Consolas, monospace` | `.series-order`、`.section-number` |
 
 **字号阶梯（根 17px）**
 
 | Token / 用途 | Size | Weight | Line-height | Letter-spacing |
 |--------------|------|--------|-------------|----------------|
-| Display / `h1` | `clamp(2rem, 4vw, 3.35rem)` | 700 | 1.25 | -0.035em |
-| Title / `h2` | `clamp(1.4rem, 2.5vw, 1.85rem)` | 700 | 1.25 | -0.02em |
+| Display / `h1` | `clamp(2rem, 4vw, 3.1rem)` · 衬线 | **600** | 1.25 | -0.02em |
+| Title / `h2` | `clamp(1.4rem, 2.5vw, 1.85rem)` · 衬线 | **600** | 1.25 | -0.02em |
 | Heading / `h3` | 1.15–1.3rem | 650–700 | 1.3 | 0 |
 | Body | 17px（1rem） | 400 | **1.7** | 0 |
 | Article body | 1.02rem | 400 | **1.95** | 0 |
@@ -377,25 +452,27 @@ html[data-theme="dark"] {
 
 ### 8.2 配色（完整 token 表）
 
-与 §3 一致，此处给工程一张可复制总表：
+以 **§3.2 方向 D** 为准（下表与之同步）。深色禁止 zinc 与 Warm Editorial C 旧值。
 
-| Token | Light | Dark（Warm Editorial C） |
+| Token | Light | Dark D · Cool Ink Press |
 |-------|-------|--------------------------|
-| `--bg-canvas` | `#F7F5F0` | `#0C0B0A` |
-| `--bg-surface` | `#FFFCF8` | `#161412` |
-| `--bg-muted` | `#EFEBE3` | `#221F1C` |
-| `--text-primary` | `#1A1A1A` | `#F5F0E8` |
-| `--text-secondary` | `#5C5A55` | `#A39E94` |
-| `--border-subtle` | `#E2DDD3` | `#2C2925` |
-| `--accent` | `#1A7A68` | `#3DDCB0` |
-| `--accent-soft` | `#E4F2EE` | `#12352F` |
-| `--level-beginner` | `#2F6F4E` | `#5EE9B5` |
-| `--level-intermediate` | `#9A6B12` | `#E4B84A` |
-| `--level-advanced` | `#8B3A3A` | `#F07178` |
-| `--focus-ring` | = accent | `#3DDCB0` |
+| `--bg-canvas` | `#F7F5F0` | `#0A0C10` |
+| `--bg-surface` | `#FFFCF8` | `#12151B` |
+| `--bg-muted` | `#EFEBE3` | `#1A1E26` |
+| `--text-primary` | `#1A1A1A` | `#F3F5F7` |
+| `--text-secondary` | `#5C5A55` | `#9AA3B0` |
+| `--border-subtle` | `#E2DDD3` | `#252A33` |
+| `--accent` | `#6B4F1A` | `#E2C58D` |
+| `--accent-soft` | `#F0E6D0` | `#221E16` |
+| `--level-beginner` | `#2F6F4E` | `#6FCF9F` |
+| `--level-intermediate` | `#9A6B12` | `#E0B25A` |
+| `--level-advanced` | `#8B3A3A` | `#E07A7A` |
+| `--focus-ring` | = accent | `#E2C58D` |
 | `--shadow` | `0 8px 28px rgb(26 26 26 / .05)` | `0 16px 48px rgb(0 0 0 / .55)` |
+| `--button-primary-bg` | `#1A1A1A` | `#E8EAED` |
+| `--button-primary-fg` | `#FFFCF8` | `#0A0C10` |
 
-对比：正文 primary on canvas ≥ 4.5:1；accent 作大字/UI ≥ 3:1。深色 **禁止** zinc `#09090B` / `#2DD4BF`。
+对比：正文 ≥ 4.5:1（深色实测 17.9:1）；链接 `#E2C58D` on canvas 11.8:1。深色 **禁止** `#09090B` / `#2DD4BF` / `#0C0B0A` / `#F5F0E8` / `#3DDCB0`。
 
 ### 8.3 页边距 · 内容宽 · 栅格 · 间距节奏
 
@@ -429,8 +506,8 @@ html[data-theme="dark"] {
 **按钮 `.button`**
 
 - padding `9px 18px`；radius sm；font 0.9rem / 650  
-- Primary：bg accent + 边 accent；浅色字 surface，深色字 canvas  
-- Secondary：透明底 + accent 字 + accent 边  
+- Primary：bg `--button-primary-bg`，字 `--button-primary-fg`（浅色墨底、深色浅钢；**不再用 accent 填满**）  
+- Secondary：透明底 + primary 字 + `--border-subtle` 边；悬停可转 accent  
 - 主操作区按钮 gap 12px  
 
 **Chip / Segmented**
@@ -480,10 +557,78 @@ html[data-theme="dark"] {
 ### 8.7 工程自检（视觉）
 
 1. 深浅切换无组件内写死 hex（除 `:root` / `[data-theme]`）。  
-2. 正文 17px/1.7，故事正文 ~1.95 行高。  
+2. 正文 17px/1.7，故事正文 ~1.95 行高；`h1`/`h2` 为衬线 600。  
 3. container 1160、水平边 20/14。  
 4. 圆角仅用 sm/md/lg/pill 四档。  
-5. 深色 token = Warm Editorial C，非 zinc。  
+5. 深色 token = **Cool Ink Press D**（`#0A0C10` / `#F3F5F7` / `#E2C58D` / 浅钢按钮），非 zinc，亦非 Warm Editorial C。  
+6. 源码中不得残留 `#3DDCB0`、`#0C0B0A`、`#F5F0E8`、`#2DD4BF`、`#09090B`。  
+
+---
+
+## 9. Feature Map（给工程对照，改深色时认这些入口）
+
+一份界面地图，避免改错块或漏状态。路由与口径仍以 §1 / §7 为准；本表只标「今晚换肤」要碰的位置。
+
+### 9.1 文件
+
+| 路径 | 作用 |
+|------|------|
+| `src/assets/site.css` | 几乎全部视觉 token 与组件皮肤；**今晚主战场** |
+| `src/assets/site.js` | ThemeToggle（`localStorage['finance-story-theme']`）；一般不用改 |
+| `src/_includes/*`、`src/index.njk`、`src/series.njk`、`src/story.njk`、`src/terms.njk` | 结构/class；仅当缺 `--font-serif` 挂钩或主按钮 class 时才改 |
+| `docs/_preview/theme-d-cool-ink.html` | 设计预览，不必部署到 Pages |
+
+### 9.2 页面块
+
+```
+全站壳
+  header.app-bar                粘顶、blur、品牌「知」、导航、[data-theme-toggle]
+    .brand-mark                 金底墨字（深色）
+    .series-menu                筹备中项为 span.is-preparing，不是死链
+  main#main
+  footer.site-footer
+
+/  首页
+  .hero
+    h1                          衬线 600
+    .hero-lead
+    .hero-note                  数字行：N 个场景 · M 篇可读 · K 篇预告
+                                窄屏：只藏长文案，保留数字（Nibble 另项，可同批）
+    .hero-actions .button       主=浅钢，次=描边
+  #series .series-grid          仅有内容的系列卡
+    .series-card / .card-bottom 「M 篇可读 · K 篇预告」
+    aside.preparing-block       筹备中条（做生意 · 养老与传承）
+  #start                        「先读这一篇」
+    .story-card.featured-pick   仅 1；左 3px accent；CTA「开始阅读」
+    .continue-reads             续读 0–4，无预告
+
+/series/<slug>/
+  .page-header                  「M 篇可读 · K 篇预告」
+  .filter-panel                 Chip / Segmented；筹备中档 disabled
+  .result-line                  「可读 a · 预告 b」+「筛选后」
+  [data-published-list]         已发布
+  details.preview-block         接下来；.story-card.planned dashed，h3 为 span 无假链
+  空系列                        筹备中条 + 首发 CTA（勿用筛选无果文案）
+
+/story/<slug>/
+  .back-link / .breadcrumb
+  .story-header h1              衬线 600
+  .story-toc                    muted 底；brief 首项文案「理念」
+  .article-body                 17–1.02rem / 1.95
+  .term-table                   thead muted
+  .takeaways                    accent-soft + 左栏线
+  .related                      「继续读这个系列」
+
+/terms/
+  .term-search input
+  .term-row                     :target 边 = accent
+```
+
+### 9.3 主题开关（不要改逻辑）
+
+- `html[data-theme="light|dark"]`
+- 首屏脚本读 `localStorage.finance-story-theme`
+- 按钮：`[data-theme-toggle]`、`[data-theme-label]`、`[data-theme-icon]`
 
 ---
 

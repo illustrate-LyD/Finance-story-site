@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cool Ink Press · 深色方案预览</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-canvas: #0A0C10;
+  --bg-surface: #12151B;
+  --bg-muted: #1A1E26;
+  --text-primary: #F3F5F7;
+  --text-secondary: #9AA3B0;
+  --border-subtle: #252A33;
+  --accent: #E2C58D;
+  --accent-soft: #221E16;
+  --level-beginner: #6FCF9F;
+  --level-intermediate: #E0B25A;
+  --level-advanced: #E07A7A;
+  --focus-ring: #E2C58D;
+  --steel: #E8EAED;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  --font-serif: "Noto Serif SC", "Songti SC", "STSong", Georgia, serif;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg-canvas); color: var(--text-primary); font-family: var(--font-sans); font-size: 17px; line-height: 1.7; }
+.wrap { width: min(1160px, calc(100% - 48px)); margin: 0 auto; }
+.bar { position: sticky; top: 0; z-index: 2; background: color-mix(in srgb, var(--bg-surface) 90%, transparent); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border-subtle); }
+.bar-inner { display: flex; align-items: center; min-height: 68px; gap: 32px; }
+.brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 650; }
+.mark { width: 32px; height: 32px; display: grid; place-items: center; background: var(--accent); color: var(--bg-canvas); border-radius: 6px; font-family: var(--font-serif); font-weight: 600; }
+nav { margin-left: auto; display: flex; gap: 24px; color: var(--text-secondary); font-size: .92rem; }
+.hero { padding: 72px 0 56px; border-bottom: 1px solid var(--border-subtle); display: grid; grid-template-columns: 1.4fr 1fr; gap: 64px; align-items: end; }
+.eyebrow { color: var(--accent); font-size: .78rem; font-weight: 650; letter-spacing: .12em; margin: 0 0 12px; }
+h1 { font-family: var(--font-serif); font-weight: 600; font-size: clamp(2rem, 4vw, 3.1rem); line-height: 1.25; letter-spacing: -.02em; margin: 0 0 20px; }
+.lead { color: var(--text-secondary); font-size: 1.12rem; line-height: 1.8; margin: 0 0 16px; max-width: 640px; }
+.nums { color: var(--text-secondary); font-size: .82rem; }
+.actions { display: flex; gap: 12px; margin-top: 28px; }
+.btn { display: inline-block; padding: 9px 18px; border-radius: 6px; font-size: .9rem; font-weight: 650; line-height: 1.2; text-decoration: none; border: 1px solid var(--steel); background: var(--steel); color: var(--bg-canvas); }
+.btn.secondary { background: transparent; color: var(--text-primary); border-color: var(--border-subtle); }
+.note { border-left: 2px solid var(--accent); padding: 8px 0 8px 20px; color: var(--text-secondary); font-size: .95rem; }
+.section { padding: 48px 0; }
+.hd { display: flex; justify-content: space-between; align-items: end; margin-bottom: 24px; }
+h2 { font-family: var(--font-serif); font-weight: 600; font-size: 1.6rem; margin: 0; }
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.card { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 24px; min-height: 200px; display: flex; flex-direction: column; }
+.card h3 { font-size: 1.25rem; margin: 12px 0; font-weight: 650; }
+.card p { color: var(--text-secondary); font-size: .9rem; margin: 0 0 16px; }
+.bottom { margin-top: auto; color: var(--text-secondary); font-size: .82rem; }
+.order { font-family: ui-monospace, Menlo, monospace; color: var(--accent); font-size: .8rem; }
+.pick { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-left: 3px solid var(--accent); border-radius: 10px; padding: 24px; }
+.meta { color: var(--text-secondary); font-size: .78rem; display: flex; gap: 12px; margin-bottom: 12px; }
+.l1 { color: var(--level-beginner); font-weight: 650; }
+.story { display: grid; grid-template-columns: 170px 1fr; gap: 56px; padding-bottom: 48px; }
+.toc { border-left: 1px solid var(--border-subtle); background: var(--bg-muted); padding: 12px 16px; border-radius: 6px; font-size: .85rem; color: var(--text-secondary); height: fit-content; }
+.toc a { color: var(--accent); text-decoration: none; }
+.article h2 { font-size: 1.4rem; border-bottom: 1px solid var(--border-subtle); padding-bottom: 12px; margin-bottom: 16px; }
+.article p { font-size: 1.02rem; line-height: 1.95; max-width: 680px; }
+.article a { color: var(--accent); }
+.take { margin-top: 24px; padding: 24px; background: var(--accent-soft); border-radius: 10px; border-left: 2px solid var(--accent); max-width: 680px; }
+.take h3 { margin: 0 0 8px; font-size: 1rem; }
+.swatches { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin-top: 16px; }
+.sw { border: 1px solid var(--border-subtle); border-radius: 10px; overflow: hidden; background: var(--bg-surface); }
+.chip { height: 64px; }
+.sw code { display: block; padding: 8px 10px; font-size: 11px; color: var(--text-secondary); }
+.cmp { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 16px; }
+.chip-ui { border: 1px solid var(--border-subtle); background: var(--bg-canvas); color: var(--text-secondary); padding: 4px 12px; border-radius: 99px; font-size: .8rem; }
+.chip-ui.on { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); font-weight: 700; }
+.badge { font-size: .72rem; font-weight: 700; padding: 1px 8px; border-radius: 99px; background: var(--accent-soft); color: var(--accent); border: 1px solid var(--accent); }
+.planned { border-style: dashed; background: var(--bg-muted); }
+.foot { border-top: 1px solid var(--border-subtle); padding: 28px 0 48px; color: var(--text-secondary); font-size: .78rem; }
+.tag { font-size: 11px; color: var(--text-secondary); margin: 0 0 24px; }
+</style>
+</head>
+<body>
+  <header class="bar"><div class="wrap bar-inner">
+    <span class="brand"><span class="mark">知</span>金融知识故事站</span>
+    <nav><span>首页</span><span>系列</span><span>索引</span></nav>
+  </div></header>
+  <main class="wrap">
+    <p class="tag" style="padding-top:28px">方案 D · Cool Ink Press（墨栏）预览稿 · 2026-11-15 · 非现网站点</p>
+    <section class="hero">
+      <div>
+        <p class="eyebrow">DARK READING</p>
+        <h1>用场景故事，读懂投资与保障</h1>
+        <p class="lead">给有一点投资经验的你：从工资、房子与市场的日常选择出发，把金融概念讲成人话。</p>
+        <p class="nums">7 个场景 · 6 篇可读 · 12 篇预告</p>
+        <div class="actions">
+          <a class="btn" href="#">从你的场景开始</a>
+          <a class="btn secondary" href="#">浏览术语索引</a>
+        </div>
+      </div>
+      <div class="note">底是凉墨，字是纸白。温度只留在栏线金——链接、眉题、选中——不进背景，不做暖色滤镜。</div>
+    </section>
+
+    <section class="section">
+      <div class="hd"><h2>从你正在经历的事读起</h2><span class="nums">可读 6 篇 · 预告 12 篇</span></div>
+      <div class="grid">
+        <article class="card"><div class="order">01</div><h3>市场与周期</h3><p>钱从哪进实体，价格如何在投资者之间跳。</p><div class="bottom">2 篇可读 · 4 篇预告</div></article>
+        <article class="card"><div class="order">02</div><h3>第一笔工资</h3><p>入职到稳定现金流：分账、应急、第一笔配置。</p><div class="bottom">1 篇可读 · 2 篇预告</div></article>
+        <article class="card"><div class="order">04</div><h3>家庭保障</h3><p>先问「坏了谁扛」，再谈收益。</p><div class="bottom">1 篇可读</div></article>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:0">
+      <p class="eyebrow">先读这一篇</p>
+      <article class="pick">
+        <div class="meta"><span>第一笔工资</span><span class="l1">● 入门</span></div>
+        <h2 style="margin-bottom:12px">三个罐子</h2>
+        <p class="lead" style="margin-bottom:16px">工资到账那天，先分罐，再谈赚多少。</p>
+        <a class="btn" href="#">开始阅读</a>
+      </article>
+    </section>
+
+    <section class="section story">
+      <aside class="toc">本篇目录<br>故事<br>术语表<br><a href="#">实例</a><br>带走这几句</aside>
+      <div class="article">
+        <p class="eyebrow">阅读页正文</p>
+        <h2>01  故事</h2>
+        <p>村里有两样东西常被摆在同一张货架上：一把<strong>雨伞</strong>，和一棵宣传「越养越值钱」的<strong>摇钱树苗</strong>。推销的人喜欢说：这伞也能结金叶子。</p>
+        <p>先分清「挡雨」和「收成」。返还话术再好听，也要先问清保什么、保额、保费、免赔与等待期。详见 <a href="#">风险转移</a>。</p>
+        <div class="take">
+          <h3>带走这几句</h3>
+          <p style="margin:0;color:var(--text-secondary)">保额看责任大小，保费看月月交不交得出，免赔额看小雨谁先踩。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:0">
+      <h2>色板与状态</h2>
+      <div class="swatches">
+        <div class="sw"><div class="chip" style="background:#0A0C10"></div><code>canvas #0A0C10</code></div>
+        <div class="sw"><div class="chip" style="background:#12151B"></div><code>surface #12151B</code></div>
+        <div class="sw"><div class="chip" style="background:#1A1E26"></div><code>muted #1A1E26</code></div>
+        <div class="sw"><div class="chip" style="background:#F3F5F7"></div><code>text #F3F5F7</code></div>
+        <div class="sw"><div class="chip" style="background:#9AA3B0"></div><code>secondary #9AA3B0</code></div>
+        <div class="sw"><div class="chip" style="background:#E2C58D"></div><code>accent #E2C58D</code></div>
+      </div>
+      <div class="cmp">
+        <span class="chip-ui">默认 Chip</span>
+        <span class="chip-ui on">选中 Chip</span>
+        <span class="badge">理念</span>
+        <span class="badge">预告</span>
+        <a class="btn" href="#">主按钮（浅钢）</a>
+        <a class="btn secondary" href="#">次按钮</a>
+        <article class="card planned" style="min-height:auto;padding:12px 16px;border-radius:10px;width:220px"><span class="badge">预告</span><div style="margin-top:6px">大纲预告卡</div></article>
+      </div>
+    </section>
+  </main>
+  <footer class="foot"><div class="wrap">本预览仅展示方向 D 的深色阅读气质。完整 token、对照表与落地清单见 docs/DESIGN_HANDOFF.md §3 / §8 / §9。</div></footer>
+</body>
+</html>
