@@ -6,8 +6,8 @@ const read = (p) => { assert.ok(fs.existsSync(path.join(out, p)), `missing ${p}`
 const home = read('index.html');
 assert.equal((home.match(/class="series-card/g) || []).length, 5, 'home shows readable series including family protection');
 assert.match(home, /名人投资理念/);
-assert.match(home, /7 个场景 · 6 篇可读 · \d+ 篇预告/);
-assert.match(home, /<aside class="hero-note"><strong>不是先背定义，而是先听故事。<\/strong><p>在熟悉的情境里遇见概念，用白话表格拆清机制，再回到实际例子。<\/p><span class="small">7 个场景 · 6 篇可读 · \d+ 篇预告<\/span><\/aside>/);
+assert.match(home, /7 个场景 · 11 篇可读 · 9 篇预告/);
+assert.match(home, /<aside class="hero-note"><strong>不是先背定义，而是先听故事。<\/strong><p>在熟悉的情境里遇见概念，用白话表格拆清机制，再回到实际例子。<\/p><span class="small">7 个场景 · 11 篇可读 · 9 篇预告<\/span><\/aside>/);
 assert.equal((home.match(/开始阅读/g) || []).length, 1, 'one primary call to action');
 assert.ok((home.match(/class="story-card /g) || []).length <= 5, 'featured plus at most four continue cards');
 assert.match(home, /先读这一篇/);
@@ -34,20 +34,21 @@ assert.match(protection, /雨伞不是摇钱树/);
 assert.match(protection, /data-readable-count>1</);
 assert.doesNotMatch(protection, /保障专题 · 筹备中/);
 const paycheckCounts = read('series/first-paycheck/index.html');
-assert.match(paycheckCounts, /data-readable-count>1</);
-assert.match(paycheckCounts, /data-preview-count>2</);
+assert.match(paycheckCounts, /data-readable-count>3</);
+assert.match(paycheckCounts, /data-preview-count>1</);
+assert.match(paycheckCounts, /3 篇可读 · 1 篇预告/);
 assert.match(paycheckCounts, /value="L3" disabled/);
 assert.match(paycheckCounts, /精读尚无可读正文/);
 assert.match(paycheckCounts, /接下来/);
 // Planned stories are non-clickable cards only.
-for (const slug of ['ledger-hears-no-coins', 'tide-goes-out', 'shelf-vs-hotpot', 'sleep-well-size', 'fixed-vs-floating', 'duration-mismatch', 'juglar-vs-kitchin', 'debt-supercycle-sketch', 'soros-reflexivity', 'duan-buy-good-wait', 'graham-mr-market', 'lynch-know-what-you-own']) {
+for (const slug of ['ledger-hears-no-coins', 'tide-goes-out', 'shelf-vs-hotpot', 'fixed-vs-floating', 'duration-mismatch', 'juglar-vs-kitchin', 'debt-supercycle-sketch', 'graham-mr-market', 'lynch-know-what-you-own']) {
   assert.ok(!fs.existsSync(path.join(out, `story/${slug}/index.html`)), `planned ${slug} has no fake story page`);
 }
 const index = read('terms/index.html');
-assert.equal((index.match(/class="term-row"/g) || []).length, 19, 'nineteen terms including deductible');
+assert.equal((index.match(/class="term-row"/g) || []).length, 35, 'thirty-five terms after the five new stories');
 assert.match(index, /data-scene=/); assert.match(index, /data-difficulty=/); assert.match(index, /data-tag=/); assert.match(index, /name="difficulty"/);
 assert.match(index, /data-term-search/); assert.match(index, /name="q"/);
-assert.match(index, /data-readable-count>19</);
+assert.match(index, /data-readable-count>35</);
 assert.match(index, /data-preview-count>0</);
 assert.match(index, /data-tag="保险"/);
 assert.doesNotMatch(index, /data-tag="保险"[^>]*>保障专题 · 筹备中/);
@@ -103,7 +104,7 @@ assert.match(jars, /返回系列 · 第一笔工资/);
 assert.doesNotMatch(jars, /返回系列 · 市场与周期|story\/new-ship-and-resale/, 'three-jars related stays in first-paycheck');
 const ideas = read('series/investor-ideas/index.html');
 assert.match(ideas, /class="format-badge">理念/);
-assert.match(ideas, /1 篇理念 · 4 篇预告/);
+assert.match(ideas, /3 篇理念 · 2 篇预告/);
 assert.match(ideas, /class="format-badge preview-badge">预告/);
 assert.match(ideas, /筛选后/);
 assert.match(ideas, /索罗斯：反射性与盛衰序列/);
@@ -123,5 +124,27 @@ const wave = read('story/kondratiev-long-wave/index.html');
 assert.match(wave, /href="#story">故事/);
 assert.match(wave, /康波周期/);
 assert.match(wave, /潮汐表上的「大潮」刻度/);
+const published = {
+  'soros-reflexivity': { title: '索罗斯：反射性与盛衰序列', series: '名人投资理念', brief: true, terms: ['反射性', '盛衰序列', '流行偏见'], contexts: ['reflexivity', 'boom-bust', 'prevailing bias'] },
+  'duan-buy-good-wait': { title: '段永平：买好的、等等、少动作', series: '名人投资理念', brief: true, terms: ['买公司', '不懂不做', '等待'], contexts: ['公开表述中的「买股票就是买公司」', '能力圈的公开表述', '公开表述中的耐心与少操作'] },
+  'sleep-well-size': { title: '能睡得着的仓位', series: '第一笔工资', brief: false, terms: ['风险偏好', '风险承受力', '回撤'], contexts: ['「我觉得自己扛得住」', '「这笔钱少一块，生活会不会被掀翻」', '投罐缩水的那几个月'] },
+  'two-tickets-same-road': { title: '同一条路，两张车票', series: '第一笔工资', brief: false, terms: ['申购费', '销售服务费', '管理费与托管费', '外扣法'], contexts: ['上车时的登车费', '路上每天扣的一笔服务费', '两种票都要交的油钱', '窗口先撕一角再给票'] },
+  'lantern-sign-priced-in': { title: '灯会签与已被定价', series: '市场与周期', brief: false, terms: ['预期差', '隐含波动率', '隐含波动率压缩'], contexts: ['灯亮了，却没有比大家以为的更亮', '灯会签的贵贱', '揭幕后签几乎成了废纸'] },
+};
+for (const [slug, spec] of Object.entries(published)) {
+  const page = read(`story/${slug}/index.html`);
+  const seriesPage = spec.series === '名人投资理念' ? ideas : spec.series === '第一笔工资' ? paycheck : read('series/markets-cycles/index.html');
+  assert.match(page, new RegExp(`<h1>${spec.title}</h1>`), slug);
+  assert.match(page, new RegExp(`返回系列 · ${spec.series}`), slug);
+  assert.match(page, /2026-11-15/, `${slug} date`);
+  assert.match(page, spec.brief ? /href="#story">理念/ : /href="#story">故事/, slug);
+  assert.match(page, spec.brief ? /文中对应/ : /故事里对应/, slug);
+  const table = page.match(/class="term-table"[\s\S]*?<\/table>/)?.[0] || '';
+  for (const term of spec.terms) assert.match(table, new RegExp(`<th scope="row">${term}</th>`), `${slug} term ${term}`);
+  for (const context of spec.contexts) assert.match(table, new RegExp(`<td>${context}</td>`), `${slug} context`);
+  assert.match(index, new RegExp(`id="term-${spec.terms[0]}"`), `${spec.terms[0]} on the index`);
+  assert.match(seriesPage, new RegExp(`<a href="/story/${slug}/">${spec.title}</a>`), `${slug} linked from series`);
+  assert.doesNotMatch(seriesPage, new RegExp(`<span>${spec.title}</span>`), `${slug} is not a preview card`);
+}
 
-console.log('P0 smoke tests: PASS — 13 routes, 6 series, 3 source stories, 9 terms, tokens and URL/theme scripts verified.');
+console.log('P0 smoke tests: PASS — 11 readable, 9 previews, 35 terms; soros-reflexivity, duan-buy-good-wait, sleep-well-size, two-tickets-same-road, lantern-sign-priced-in.');
