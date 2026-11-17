@@ -102,7 +102,18 @@ Nibble：`format` 缺省 = `story`；brief 时 Toc 第一项 label=`理念`，�
 
 **2026-11-15**：Dong 不满意现网深色（Warm Editorial C），要求**整案重做**，不要在 C 上小修。新方案采用方向 **D · Cool Ink Press（墨栏）**。目标是耐看的深色阅读，而不是再铺一层暖色滤镜。浅色纸色与结构保留，仅把 accent 从青绿改为同族青铜，保证深浅是一套系统。
 
-预览稿（非现网）：`docs/_preview/theme-d-cool-ink.html`（截图 `theme-d-hero.png` / `theme-d-full.png`）。
+**2026-11-17**：页底 `#0A0C10` 不动。Dong 选定方案 **B · 中等石板**，只抬深色表面层级——现网 `--bg-surface: #12151B` 与页底对比仅 **1.07:1**，系列卡几乎融进背景。因该 token 同时用于顶栏、Filter、StoryCard、TermRow，一并更新，避免只改系列卡造成断层。`--bg-muted` 同步上移一档，保持 canvas < surface < muted，避免表头 / Toc / 预告卡比卡片更暗。浅色与 accent / 栏线金不动。对照预览：`docs/_preview/card-surface-options.html`。
+
+| Token | 旧（D 初版） | 新（B · 中等石板，采用） | 说明 |
+|-------|--------------|--------------------------|------|
+| `--bg-canvas` | `#0A0C10` | **不变** | 页底凉墨 |
+| `--bg-surface` | `#12151B` | `#222833` | 与页底对比 1.32:1 |
+| `--border-subtle` | `#252A33` | `#3A4250` | 边随底抬亮 |
+| `--bg-muted` | `#1A1E26` | `#2A313E` | 比 surface 再亮一档（对比约 1.13:1） |
+
+正文 `#F3F5F7` on 新 surface **13.5:1**；次要字 `#9AA3B0` **5.8:1**，均过 4.5:1。
+
+预览稿（非现网）：`docs/_preview/theme-d-cool-ink.html`（截图 `theme-d-hero.png` / `theme-d-full.png`）；卡片底对照：`docs/_preview/card-surface-options.html`。
 
 ### 3.1 浅色（结构沿用，accent 对齐 D）
 
@@ -152,11 +163,11 @@ Nibble：`format` 缺省 = `story`；brief 时 Toc 第一项 label=`理念`，�
 | Token | dark D（采用） | light（对照） | 用途 |
 |-------|----------------|---------------|------|
 | `--bg-canvas` | `#0A0C10` | `#F7F5F0` | 页底：凉墨 / 暖纸 |
-| `--bg-surface` | `#12151B` | `#FFFCF8` | 顶栏、卡片、Filter |
-| `--bg-muted` | `#1A1E26` | `#EFEBE3` | Chip 底、表头、Toc |
+| `--bg-surface` | `#222833` | `#FFFCF8` | 顶栏、卡片、Filter（2026-11-17 方案 B） |
+| `--bg-muted` | `#2A313E` | `#EFEBE3` | Chip 底、表头、Toc（随 surface 上移） |
 | `--text-primary` | `#F3F5F7` | `#1A1A1A` | 纸白 / 墨（**禁止奶油 `#F5F0E8`**） |
 | `--text-secondary` | `#9AA3B0` | `#5C5A55` | 元信息（深色 7.7:1 @ canvas） |
-| `--border-subtle` | `#252A33` | `#E2DDD3` | 发丝边（也可用 `color-mix(in srgb, #fff 8%, transparent)`） |
+| `--border-subtle` | `#3A4250` | `#E2DDD3` | 发丝边（随 surface 抬亮；也可用 `color-mix(in srgb, #fff 12%, transparent)`） |
 | `--accent` | `#E2C58D` | `#6B4F1A` | 栏线金 / 青铜；链接、眉题、选中 |
 | `--accent-soft` | `#221E16` | `#F0E6D0` | 选中 Chip、带走这几句浅底（深色几乎无色相，仅微金） |
 | `--level-beginner` | `#6FCF9F` | `#2F6F4E` | 入门 |
@@ -167,7 +178,7 @@ Nibble：`format` 缺省 = `story`；brief 时 Toc 第一项 label=`理念`，�
 | `--button-primary-bg` | `#E8EAED` | `#1A1A1A` | 深色主按钮=浅钢；浅色=墨 |
 | `--button-primary-fg` | `#0A0C10` | `#FFFCF8` | 主按钮字色 |
 
-对比（已测）：正文 `#F3F5F7` on `#0A0C10` **17.9:1**；链接 `#E2C58D` on canvas **11.8:1**；次要字 `#9AA3B0` **7.7:1**。
+对比（已测）：正文 `#F3F5F7` on `#0A0C10` **17.9:1**；on surface `#222833` **13.5:1**；链接 `#E2C58D` on canvas **11.8:1**；次要字 `#9AA3B0` on canvas **7.7:1**、on surface **5.8:1**。系列卡与页底 **1.32:1**（旧值仅 1.07:1）。
 
 #### 组件状态（深色，按此映射，勿保留旧青绿填充）
 
@@ -208,6 +219,7 @@ Nibble：`format` 缺省 = `story`；brief 时 Toc 第一项 label=`理念`，�
 8. 不加渐变、发光、暖色 canvas 染色。
 9. 间距、栅格、圆角、口径（§5–§8.4 / §7）**不要重做**；只换色、字、按钮语义。
 10. 推 Pages 后让 UI-web 复扫：深色首页 + 故事页 + `/terms/` + 浅色对照一页。
+11. **2026-11-17 补丁（方案 B）**：仅改 dark 的 `--bg-surface: #222833`、`--border-subtle: #3A4250`、`--bg-muted: #2A313E`。`--bg-canvas` 及其他 token **不要动**。改完推 Pages，再让 UI-web 复扫深色首页系列卡与故事页。
 
 ```css
 /* Nibble：:root 增补（浅色） */
@@ -223,11 +235,11 @@ Nibble：`format` 缺省 = `story`；brief 时 Toc 第一项 label=`理念`，�
 /* Nibble：整段替换 dark 主题 */
 html[data-theme="dark"] {
   --bg-canvas: #0A0C10;
-  --bg-surface: #12151B;
-  --bg-muted: #1A1E26;
+  --bg-surface: #222833;
+  --bg-muted: #2A313E;
   --text-primary: #F3F5F7;
   --text-secondary: #9AA3B0;
-  --border-subtle: #252A33;
+  --border-subtle: #3A4250;
   --accent: #E2C58D;
   --accent-soft: #221E16;
   --level-beginner: #6FCF9F;
@@ -457,11 +469,11 @@ h1, .story-content h2, .page-header h1, .featured-pick h2, .section-heading h2 {
 | Token | Light | Dark D · Cool Ink Press |
 |-------|-------|--------------------------|
 | `--bg-canvas` | `#F7F5F0` | `#0A0C10` |
-| `--bg-surface` | `#FFFCF8` | `#12151B` |
-| `--bg-muted` | `#EFEBE3` | `#1A1E26` |
+| `--bg-surface` | `#FFFCF8` | `#222833` |
+| `--bg-muted` | `#EFEBE3` | `#2A313E` |
 | `--text-primary` | `#1A1A1A` | `#F3F5F7` |
 | `--text-secondary` | `#5C5A55` | `#9AA3B0` |
-| `--border-subtle` | `#E2DDD3` | `#252A33` |
+| `--border-subtle` | `#E2DDD3` | `#3A4250` |
 | `--accent` | `#6B4F1A` | `#E2C58D` |
 | `--accent-soft` | `#F0E6D0` | `#221E16` |
 | `--level-beginner` | `#2F6F4E` | `#6FCF9F` |
@@ -472,7 +484,7 @@ h1, .story-content h2, .page-header h1, .featured-pick h2, .section-heading h2 {
 | `--button-primary-bg` | `#1A1A1A` | `#E8EAED` |
 | `--button-primary-fg` | `#FFFCF8` | `#0A0C10` |
 
-对比：正文 ≥ 4.5:1（深色实测 17.9:1）；链接 `#E2C58D` on canvas 11.8:1。深色 **禁止** `#09090B` / `#2DD4BF` / `#0C0B0A` / `#F5F0E8` / `#3DDCB0`。
+对比：正文 ≥ 4.5:1（深色 canvas 17.9:1，surface 13.5:1）；链接 `#E2C58D` on canvas 11.8:1。深色 **禁止** `#09090B` / `#2DD4BF` / `#0C0B0A` / `#F5F0E8` / `#3DDCB0`。`--bg-surface` / `--border-subtle` / `--bg-muted` 以 2026-11-17 方案 B 为准，勿退回 `#12151B` / `#252A33` / `#1A1E26`。
 
 ### 8.3 页边距 · 内容宽 · 栅格 · 间距节奏
 
@@ -560,7 +572,7 @@ h1, .story-content h2, .page-header h1, .featured-pick h2, .section-heading h2 {
 2. 正文 17px/1.7，故事正文 ~1.95 行高；`h1`/`h2` 为衬线 600。  
 3. container 1160、水平边 20/14。  
 4. 圆角仅用 sm/md/lg/pill 四档。  
-5. 深色 token = **Cool Ink Press D**（`#0A0C10` / `#F3F5F7` / `#E2C58D` / 浅钢按钮），非 zinc，亦非 Warm Editorial C。  
+5. 深色 token = **Cool Ink Press D + 方案 B 表面**（页底 `#0A0C10` / 卡片 `#222833` / 边 `#3A4250` / muted `#2A313E` / 字 `#F3F5F7` / 栏线金 `#E2C58D` / 浅钢按钮），非 zinc，亦非 Warm Editorial C，亦非 D 初版卡片 `#12151B`。  
 6. 源码中不得残留 `#3DDCB0`、`#0C0B0A`、`#F5F0E8`、`#2DD4BF`、`#09090B`。  
 
 ---
