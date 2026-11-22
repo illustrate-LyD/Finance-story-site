@@ -4,24 +4,25 @@ import path from 'node:path';
 const out = path.resolve('_site');
 const read = (p) => { assert.ok(fs.existsSync(path.join(out, p)), `missing ${p}`); return fs.readFileSync(path.join(out, p), 'utf8'); };
 const home = read('index.html');
-assert.equal((home.match(/class="series-card/g) || []).length, 6, 'home shows readable series including family protection and running a business');
+assert.equal((home.match(/class="series-card/g) || []).length, 7, 'home shows every series once retirement has a published story');
 assert.match(home, /名人投资理念/);
-assert.match(home, /7 个场景 · 19 篇可读 · 14 篇预告/);
-assert.match(home, /<aside class="hero-note"><strong>不是先背定义，而是先听故事。<\/strong><p>在熟悉的情境里遇见概念，用白话表格拆清机制，再回到实际例子。<\/p><span class="small">7 个场景 · 19 篇可读 · 14 篇预告<\/span><\/aside>/);
+assert.match(home, /7 个场景 · 24 篇可读 · 9 篇预告/);
+assert.match(home, /<aside class="hero-note"><strong>不是先背定义，而是先听故事。<\/strong><p>在熟悉的情境里遇见概念，用白话表格拆清机制，再回到实际例子。<\/p><span class="small">7 个场景 · 24 篇可读 · 9 篇预告<\/span><\/aside>/);
 assert.equal((home.match(/开始阅读/g) || []).length, 1, 'one primary call to action');
 assert.ok((home.match(/class="story-card /g) || []).length <= 5, 'featured plus at most four continue cards');
 assert.match(home, /先读这一篇/);
 assert.match(home, /<h2>三个罐子<\/h2>/, 'featured slot is three-jars');
 assert.match(home, /续读/);
 assert.match(home, /约 \d+ 分钟/);
-assert.match(home, /筹备中：养老与传承/);
+assert.doesNotMatch(home, /筹备中：养老与传承/);
+assert.doesNotMatch(home, /养老与传承 · 筹备中/);
 assert.doesNotMatch(home, /筹备中：做生意/);
 assert.doesNotMatch(home, /做生意 · 筹备中/);
 assert.match(home, /<h3><a href="\/series\/running-a-business\/">做生意<\/a><\/h3>/);
-assert.doesNotMatch(home, /<h3><a href="\/series\/retirement-legacy\/">/);
+assert.match(home, /<h3><a href="\/series\/retirement-legacy\/">养老与传承<\/a><\/h3>/);
 assert.doesNotMatch(home, /筹备中：家庭保障/);
 assert.match(home, /tag=%E4%BF%9D%E9%99%A9/, 'insurance tag links once a readable story exists');
-for (const slug of ['markets-cycles', 'first-paycheck', 'home-and-debt', 'family-protection', 'investor-ideas', 'running-a-business']) {
+for (const slug of ['markets-cycles', 'first-paycheck', 'home-and-debt', 'family-protection', 'investor-ideas', 'running-a-business', 'retirement-legacy']) {
   const page = read(`series/${slug}/index.html`);
   assert.match(page, /data-filter-form/);
   assert.match(page, /data-readable-count>\d+</);
@@ -29,12 +30,13 @@ for (const slug of ['markets-cycles', 'first-paycheck', 'home-and-debt', 'family
   assert.match(page, /已发布/);
 }
 const retirement = read('series/retirement-legacy/index.html');
-assert.match(retirement, /养老与传承 · 筹备中/);
-assert.match(retirement, /接下来/);
-assert.match(retirement, /<span>养老与传承<\/span>/);
+assert.match(retirement, /data-readable-count>1</);
+assert.match(retirement, /1 篇可读/);
+assert.match(retirement, /<a href="\/story\/life-retirement-legacy\/">停了添柴之后，炉火怎么稳着烧<\/a>/);
 assert.match(retirement, /本系列有 1 篇也出现在<a href="\/life\/">人生场景<\/a>时间线/);
-assert.doesNotMatch(retirement, /href="\/story\/life-retirement-legacy\//);
+assert.doesNotMatch(retirement, /<span>停了添柴之后，炉火怎么稳着烧<\/span>/);
 assert.doesNotMatch(retirement, /这个场景正在筹备中/);
+assert.doesNotMatch(retirement, /养老与传承 · 筹备中/);
 const business = read('series/running-a-business/index.html');
 assert.match(business, /data-readable-count>2</);
 assert.match(business, /2 篇可读/);
@@ -44,15 +46,18 @@ assert.doesNotMatch(business, /这个场景正在筹备中/);
 assert.doesNotMatch(business, /也出现在<a href="\/life\/">人生场景/);
 const protection = read('series/family-protection/index.html');
 assert.match(protection, /雨伞不是摇钱树/);
-assert.match(protection, /data-readable-count>1</);
+assert.match(protection, /data-readable-count>3</);
+assert.match(protection, /<a href="\/story\/life-child-dca-account\/">给孩子另备一壶走远路的水<\/a>/);
+assert.match(protection, /<a href="\/story\/life-after-marriage-allocation\/">成亲之后，先画一张远近不同的地图<\/a>/);
 assert.match(protection, /本系列有 3 篇也出现在<a href="\/life\/">人生场景<\/a>时间线/);
 assert.doesNotMatch(protection, /保障专题 · 筹备中/);
 assert.match(read('series/home-and-debt/index.html'), /本系列有 1 篇也出现在<a href="\/life\/">人生场景<\/a>时间线/);
 assert.doesNotMatch(read('series/markets-cycles/index.html'), /也出现在<a href="\/life\/">人生场景/);
 const paycheckCounts = read('series/first-paycheck/index.html');
-assert.match(paycheckCounts, /data-readable-count>3</);
-assert.match(paycheckCounts, /data-preview-count>2</);
-assert.match(paycheckCounts, /3 篇可读 · 2 篇预告/);
+assert.match(paycheckCounts, /data-readable-count>4</);
+assert.match(paycheckCounts, /data-preview-count>1</);
+assert.match(paycheckCounts, /4 篇可读 · 1 篇预告/);
+assert.match(paycheckCounts, /<a href="\/story\/life-graduation-plan\/">出师时最贵的不是钱袋<\/a>/);
 assert.match(paycheckCounts, /本系列有 1 篇也出现在<a href="\/life\/">人生场景<\/a>时间线/);
 assert.match(paycheckCounts, /value="L3" disabled/);
 assert.match(paycheckCounts, /精读尚无可读正文/);
@@ -62,10 +67,10 @@ for (const slug of ['ledger-hears-no-coins', 'tide-goes-out', 'shelf-vs-hotpot',
   assert.ok(!fs.existsSync(path.join(out, `story/${slug}/index.html`)), `planned ${slug} has no fake story page`);
 }
 const index = read('terms/index.html');
-assert.equal((index.match(/class="term-row"/g) || []).length, 63, 'sixty-three terms after the L3 essay');
+assert.equal((index.match(/class="term-row"/g) || []).length, 82, 'eighty-two terms after the five life stories');
 assert.match(index, /data-scene=/); assert.match(index, /data-difficulty=/); assert.match(index, /data-tag=/); assert.match(index, /name="difficulty"/);
 assert.match(index, /data-term-search/); assert.match(index, /name="q"/);
-assert.match(index, /data-readable-count>63</);
+assert.match(index, /data-readable-count>82</);
 assert.match(index, /data-preview-count>0</);
 assert.match(index, /data-tag="保险"/);
 assert.doesNotMatch(index, /data-tag="保险"[^>]*>保障专题 · 筹备中/);
@@ -171,20 +176,22 @@ for (const [slug, spec] of Object.entries(published)) {
 
 const life = read('life/index.html');
 assert.match(life, /<h1>人生场景<\/h1>/);
-assert.match(life, /7 个阶段 · 1 篇可读 · 5 篇预告/);
+assert.match(life, /7 个阶段 · 6 篇可读 · 0 篇预告/);
 assert.doesNotMatch(life, /data-filter-form|class="filter-panel"/);
 assert.equal((life.match(/class="life-stop /g) || []).length, 7);
+assert.equal((life.match(/class="life-stop is-readable"/g) || []).length, 7);
+assert.doesNotMatch(life, /class="life-stop is-planned"|format-badge preview-badge/);
 assert.match(life, /href="\/life\/" aria-current="page">人生<\/a>/);
 assert.match(life, /href="\/story\/insurance-not-investment\/"/);
 assert.match(life, /雨伞不是摇钱树/);
 assert.match(life, /与「出生到 18 岁」为同一篇/);
-assert.match(life, /生孩子：孩子独立账户定投，与出生到 18 岁为同一篇/);
-assert.match(life, /<span>给孩子定投（独立账户）<\/span>/);
-assert.match(life, /aria-hidden="true">孩子独立账户定投<\/span>/);
+assert.match(life, /aria-label="生孩子：给孩子另备一壶走远路的水，与出生到 18 岁为同一篇"/);
+assert.equal((life.match(/href="\/story\/life-child-dca-account\/"/g) || []).length, 4, 'both child stops share one story URL');
 for (const stage of ['出生到 18 岁', '大学毕业', '工作', '结婚', '婚后', '生孩子', '退休与养老']) assert.match(life, new RegExp(stage));
 assert.match(home, /id="life-path"/);
 assert.match(home, /<h2>按人生阶段读<\/h2>/);
-assert.match(home, /7 个阶段 · 1 篇可读 · 5 篇预告/);
+assert.match(home, /7 个阶段 · 6 篇可读 · 0 篇预告/);
+assert.equal((home.match(/class="life-stop is-readable"/g) || []).length, 7);
 assert.match(home, /href="\/life\/">查看完整时间线 →<\/a>/);
 assert.match(home, /href="\/" aria-current="page">首页<\/a>/);
 assert.match(home, /<a href="\/life\/">人生<\/a><a href="\/terms\/">索引<\/a>/);
@@ -197,8 +204,8 @@ const lifeNavAt = insurance.indexOf('class="life-path-nav"');
 const relatedAt = insurance.indexOf('继续读这个系列');
 assert.ok(lifeNavAt > 0 && lifeNavAt < relatedAt, 'life path sits above 继续读这个系列');
 assert.match(insurance, /aria-current="step">工作</);
-assert.match(insurance, /上一阶段：大学毕业 · 预告/);
-assert.match(insurance, /下一阶段：结婚 · 预告/);
+assert.match(insurance, /上一阶段：<a href="\/story\/life-graduation-plan\/">《出师时最贵的不是钱袋》<\/a>/);
+assert.match(insurance, /下一阶段：<a href="\/story\/life-marriage-house-car\/">《屋子和车子，都要从同一口井打水》<\/a>/);
 assert.match(insurance, /href="\/life\/">查看完整时间线<\/a>/);
 assert.match(insurance, /class="back-link" href="\/series\/family-protection\/">← 返回系列 · 家庭保障/);
 assert.doesNotMatch(insurance, /返回系列 · 人生|breadcrumb[\s\S]{0,120}人生场景/);
@@ -234,10 +241,33 @@ const htmlFiles = (dir) => fs.readdirSync(dir, { withFileTypes: true }).flatMap(
   const full = path.join(dir, ent.name);
   return ent.isDirectory() ? htmlFiles(full) : full.endsWith('.html') ? [full] : [];
 });
-for (const file of htmlFiles(out)) {
-  const html = fs.readFileSync(file, 'utf8');
-  assert.doesNotMatch(html, /\/story\/life-[a-z0-9-]+\//, `no planned life story URL in ${path.relative(out, file)}`);
+const lifeStories = {
+  'life-child-dca-account': { title: '给孩子另备一壶走远路的水', series: '家庭保障', seriesSlug: 'family-protection', level: 'L1', terms: ['专户', '定投', '投资期限', '权属与用途约定'], contexts: ['从家里大锅旁边另拿开的那只水囊', '往水囊里细水常流地滴', '从摇篮走到大约十八岁', '袋口上写清谁看管、用在哪'] },
+  'life-graduation-plan': { title: '出师时最贵的不是钱袋', series: '第一笔工资', seriesSlug: 'first-paycheck', level: 'L1', terms: ['人力资本', '生活方式通胀', '高息消费负债', '收支可见'], contexts: ['出师时那双还能做许多年活的手', '加薪后租金、聚餐和装备一起涨满', '「先花后还」的消费账', '奶奶先问的那本进出账'] },
+  'life-marriage-house-car': { title: '屋子和车子，都要从同一口井打水', series: '买房与负债', seriesSlug: 'home-and-debt', level: 'L2', terms: ['刚性支出叠加', '折旧', '机会成本', '变现难度'], contexts: ['两只水桶同时在同一口井沿上打水', '马车越用越旧', '打进这一桶，井里就少了那一桶', '屋子不能像井水那样，说提就提走'] },
+  'life-after-marriage-allocation': { title: '成亲之后，先画一张远近不同的地图', series: '家庭保障', seriesSlug: 'family-protection', level: 'L2', terms: ['家庭规划单位', '期限匹配', '风险承受力', '资金透明度'], contexts: ['把两本可以各过各的账，摊成一张地图', '近路、中途和远路分开放', '婚后重新量一次的那把尺', '地图要摊在桌上，不必强求只用一个钱袋'] },
+  'life-retirement-legacy': { title: '停了添柴之后，炉火怎么稳着烧', series: '养老与传承', seriesSlug: 'retirement-legacy', level: 'L2', terms: ['积累期与提取期', '养老保障层次', '收益序列风险', '传承意愿'], contexts: ['从边烧边添，转到计划着烧自己这堆柴', '公家的饷、东家留下的一截，以及自己这堆柴', '头几个冬天又湿又冷，却仍按往常的份量抽柴', '炉边留下的那一截，是给谁的、怎么交代'] },
+};
+for (const [slug, spec] of Object.entries(lifeStories)) {
+  const page = read(`story/${slug}/index.html`);
+  const seriesPage = slug === 'life-retirement-legacy' ? retirement : slug === 'life-graduation-plan' ? paycheckCounts : slug === 'life-marriage-house-car' ? read('series/home-and-debt/index.html') : protection;
+  assert.match(page, new RegExp(`<h1>${spec.title}</h1>`), slug);
+  assert.match(page, new RegExp(`返回系列 · ${spec.series}`), slug);
+  assert.match(page, /2026-11-22/, slug);
+  assert.match(page, new RegExp(`level-${spec.level}`), slug);
+  assert.match(page, /class="life-path-nav"/, slug);
+  assert.match(life, new RegExp(`href="/story/${slug}/"`), `${slug} linked from the timeline`);
+  assert.match(seriesPage, new RegExp(`<a href="/story/${slug}/">${spec.title}</a>`), slug);
+  const table = page.match(/class="term-table"[\s\S]*?<\/table>/)?.[0] || '';
+  for (const term of spec.terms) assert.match(table, new RegExp(`<th scope="row">${term}</th>`), `${slug} ${term}`);
+  for (const context of spec.contexts) assert.match(table, new RegExp(`<td>${context}</td>`), `${slug} context`);
 }
+const child = read('story/life-child-dca-account/index.html');
+assert.match(child, /aria-current="step">出生到 18 岁/);
+assert.match(child, /aria-current="step">生孩子/);
+assert.doesNotMatch(child, /上一阶段/);
+assert.match(child, /下一阶段：<a href="\/story\/life-graduation-plan\/">《出师时最贵的不是钱袋》<\/a>/);
+assert.match(read('series/home-and-debt/index.html'), /<a href="\/story\/life-marriage-house-car\/">屋子和车子，都要从同一口井打水<\/a>/);
 assert.doesNotMatch(css, /--bg-canvas: #0A0C10[\s\S]{0,80}#12151B|#12151B|--bg-surface: #12151B|--bg-muted: #1A1E26|--border-subtle: #252A33/, 'scheme B surfaces stay');
 
 const markets = read('series/markets-cycles/index.html');
@@ -248,4 +278,4 @@ assert.doesNotMatch(markets, /精读尚无可读正文/);
 assert.match(read('story/dollar-tide-fed-gold/index.html'), /level-L3/);
 assert.match(read('story/dollar-tide-fed-gold/index.html'), /不是定律|不构成任何投资建议/);
 
-console.log('P0 smoke tests: PASS — 19 readable, 14 previews, 63 terms; life timeline 7/1/5; L3 dollar-tide-fed-gold live.');
+console.log('P0 smoke tests: PASS — 24 readable, 9 previews, 82 terms; life timeline 7/6/0; five life stories published.');
