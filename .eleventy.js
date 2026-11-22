@@ -66,6 +66,47 @@ function loadContent() {
       hook: p.hook || `大纲知识点：${p.topics.join('、')}。正文待 Bullie 供稿。`, url: `/series/${p.seriesSlug}/` }));
   const allStories = [...stories, ...planned];
   const bySeries = Object.fromEntries(series.map((s) => [s.slug, allStories.filter((story) => story.seriesSlug === s.slug)]));
+  const plannedBySlug = Object.fromEntries(JSON.parse(read('content/planned-stories.json')).map((item) => [item.slug, item]));
+  const storyBySlug = Object.fromEntries(stories.map((story) => [story.slug, story]));
+  const lifeRaw = JSON.parse(read('content/life-timeline.json'));
+  const lifeStops = lifeRaw.stops.map((stop) => {
+    const story = storyBySlug[stop.storySlug];
+    const plannedItem = plannedBySlug[stop.storySlug];
+    const readable = Boolean(story);
+    const seriesSlug = readable ? story.seriesSlug : (plannedItem && plannedItem.seriesSlug) || '';
+    return {
+      id: stop.id,
+      stage: stop.stage,
+      teaser: stop.teaser || '',
+      storySlug: stop.storySlug,
+      sameAs: stop.sameAs || '',
+      sameAsNote: stop.sameAsNote || '',
+      readable,
+      title: readable ? story.title : (stop.teaser || stop.storySlug),
+      summary: readable ? (story.hook || story.summary || '') : '',
+      level: readable ? story.level : (levelMap[stop.plannedDifficulty] || 'L1'),
+      seriesSlug,
+      url: readable ? `/story/${stop.storySlug}/` : '',
+    };
+  });
+  const lifeStopById = Object.fromEntries(lifeStops.map((stop) => [stop.id, stop]));
+  const seenLifeSlugs = new Set();
+  lifeStops.forEach((stop) => {
+    stop.isRepeat = seenLifeSlugs.has(stop.storySlug);
+    seenLifeSlugs.add(stop.storySlug);
+    const sameStop = stop.sameAs ? lifeStopById[stop.sameAs] : null;
+    stop.sameAsStage = sameStop ? sameStop.stage : '';
+    if (stop.sameAs && !stop.sameAsNote && stop.sameAsStage) stop.sameAsNote = `与「${stop.sameAsStage}」为同一篇`;
+    stop.accessibleName = stop.isRepeat && stop.sameAsStage
+      ? `${stop.stage}：${stop.title}，与${stop.sameAsStage}为同一篇`
+      : stop.title;
+  });
+  const lifeSlugsBySeries = new Map();
+  lifeStops.forEach((stop) => {
+    if (!stop.seriesSlug) return;
+    if (!lifeSlugsBySeries.has(stop.seriesSlug)) lifeSlugsBySeries.set(stop.seriesSlug, new Set());
+    lifeSlugsBySeries.get(stop.seriesSlug).add(stop.storySlug);
+  });
   const coverageOf = (list) => ({
     tags: [...new Set(list.flatMap((s) => s.tags || []))],
     levels: [...new Set(list.map((s) => s.level).filter(Boolean))],
@@ -74,6 +115,7 @@ function loadContent() {
     const storiesIn = bySeries[s.slug] || [];
     const publishedStories = storiesIn.filter((x) => !x.planned);
     return { ...s, stories: storiesIn, publishedStories, coverage: coverageOf(publishedStories),
+      lifeCount: (lifeSlugsBySeries.get(s.slug) || new Set()).size,
       levels: [...new Set(storiesIn.map((x) => x.level))] };
   });
   const readableSeries = seriesModels.filter((s) => s.publishedStories.length > 0);
@@ -103,9 +145,37 @@ function loadContent() {
       storySlugs: [story.slug], stories: [story], scenes: [story.seriesSlug], tags: [...story.tags], levels: [story.level] });
   }));
   const seriesBySlug = Object.fromEntries(seriesModels.map((s) => [s.slug, s]));
+  lifeStops.forEach((stop) => {
+    const seriesItem = seriesBySlug[stop.seriesSlug];
+    stop.seriesTitle = seriesItem ? seriesItem.title : '';
+  });
+  const lifeNavBySlug = {};
+  lifeStops.forEach((stop, index) => {
+    const existing = lifeNavBySlug[stop.storySlug];
+    if (existing) {
+      existing.currentIds.push(stop.id);
+      return;
+    }
+    lifeNavBySlug[stop.storySlug] = {
+      currentIds: [stop.id],
+      prev: index > 0 ? lifeStops[index - 1] : null,
+      next: index < lifeStops.length - 1 ? lifeStops[index + 1] : null,
+    };
+  });
+  const lifeReadableSlugs = new Set(lifeStops.filter((stop) => stop.readable).map((stop) => stop.storySlug));
+  const lifePlannedSlugs = new Set(lifeStops.filter((stop) => !stop.readable).map((stop) => stop.storySlug));
+  const life = {
+    title: lifeRaw.title,
+    summary: lifeRaw.summary,
+    stops: lifeStops,
+    stageCount: lifeStops.length,
+    readableCount: lifeReadableSlugs.size,
+    plannedCount: lifePlannedSlugs.size,
+    navBySlug: lifeNavBySlug,
+  };
   return { series: seriesModels, stories, allStories, terms: [...termMap.values()], levelMap, seriesBySlug,
     coverage: coverageOf(stories), readableSeries, preparingSeries, featured, continueReads,
-    previewCount: planned.length };
+    previewCount: planned.length, life };
 }
 module.exports = function(eleventyConfig) {
   const data = loadContent();

@@ -1,7 +1,11 @@
 {% macro levelBadge(level) %}<span class="level level-{{ level }}"><span aria-hidden="true">●</span> {{ {'L1':'入门','L2':'进阶','L3':'精读'}[level] }}</span>{% endmacro %}
 {% macro tags(tags, linked=true) %}<div class="tag-list" aria-label="知识域标签">{% for tag in tags %}{% if linked %}<a class="tag-chip" href="{{ '/terms/' | url }}?tag={{ tag | urlencode }}">{{ tag }}</a>{% else %}<span class="tag-chip">{{ tag }}</span>{% endif %}{% endfor %}</div>{% endmacro %}
-{% macro appHeader(seriesItems) %}
-<header class="app-bar" id="top"><div class="container bar-inner"><a class="brand" href="{{ '/' | url }}" aria-label="金融知识故事站首页"><span class="brand-mark" aria-hidden="true">知</span><span>金融知识故事站</span></a><nav aria-label="主导航"><a href="{{ '/' | url }}">首页</a><details class="series-menu"><summary>系列</summary><div>{% for item in seriesItems %}{% if item.publishedStories.length %}<a href="{{ ('/series/' + item.slug + '/') | url }}">{{ item.title }}</a>{% else %}<span class="is-preparing">{% if item.slug == 'family-protection' or '保障' in item.title %}保障专题 · 筹备中{% else %}{{ item.title }} · 筹备中{% endif %}</span>{% endif %}{% endfor %}</div></details><a href="{{ '/terms/' | url }}">索引</a></nav><button class="theme-toggle" type="button" data-theme-toggle aria-label="切换到深色主题" aria-pressed="false"><span data-theme-label>深色</span><span aria-hidden="true" data-theme-icon>☾</span></button></div></header>
+{% macro appHeader(seriesItems, currentUrl) %}
+{% set homeHref = '/' | url %}
+{% set lifeHref = '/life/' | url %}
+{% set termsHref = '/terms/' | url %}
+{% set here = currentUrl or '' %}
+<header class="app-bar" id="top"><div class="container bar-inner"><a class="brand" href="{{ homeHref }}" aria-label="金融知识故事站首页"><span class="brand-mark" aria-hidden="true">知</span><span>金融知识故事站</span></a><nav aria-label="主导航"><a href="{{ homeHref }}"{% if here == homeHref or here == homeHref + 'index.html' %} aria-current="page"{% endif %}>首页</a><details class="series-menu"><summary>系列</summary><div>{% for item in seriesItems %}{% if item.publishedStories.length %}<a href="{{ ('/series/' + item.slug + '/') | url }}">{{ item.title }}</a>{% else %}<span class="is-preparing">{% if item.slug == 'family-protection' or '保障' in item.title %}保障专题 · 筹备中{% else %}{{ item.title }} · 筹备中{% endif %}</span>{% endif %}{% endfor %}</div></details><a href="{{ lifeHref }}"{% if here == lifeHref or here == lifeHref + 'index.html' %} aria-current="page"{% endif %}>人生</a><a href="{{ termsHref }}"{% if here == termsHref or here == termsHref + 'index.html' %} aria-current="page"{% endif %}>索引</a></nav><button class="theme-toggle" type="button" data-theme-toggle aria-label="切换到深色主题" aria-pressed="false"><span data-theme-label>深色</span><span aria-hidden="true" data-theme-icon>☾</span></button></div></header>
 {% endmacro %}
 {% macro storyCard(story, seriesItems) %}
 <article class="story-card {% if story.planned %}planned{% endif %}" data-story data-planned="{{ 'true' if story.planned else 'false' }}" data-scene="{{ story.seriesSlug }}" data-tags="{{ story.tags | join(',') }}" data-difficulty="{{ story.level }}"{% if story.planned %} aria-disabled="true"{% endif %}>
@@ -17,4 +21,34 @@
 <fieldset class="level-filter"><legend>难度</legend><div class="segmented"><label><input type="radio" name="difficulty" value="" checked><span>全部</span></label>{% for level in ['L1','L2','L3'] %}{% set open = level in scopeLevels %}{% set label = {'L1':'入门','L2':'进阶','L3':'精读'}[level] %}<label{% if not open %} class="is-preparing"{% endif %}><input type="radio" name="difficulty" value="{{ level }}"{% if not open %} disabled aria-disabled="true"{% endif %}><span>{{ label }}{% if not open %} · 筹备中{% endif %}</span></label>{% endfor %}</div>{% if not ('L3' in scopeLevels) %}<p class="filter-note small">精读尚无可读正文，这一档筹备中，不会筛出空列表。</p>{% endif %}</fieldset>
 <div class="filter-actions"><span data-selection-summary>全部标签 · 全部难度</span><button class="text-button" type="button" data-clear-filters>清除筛选</button></div><noscript><button type="submit">应用筛选（无 JavaScript 降级需刷新）</button></noscript>
 </form><div class="result-line" role="status" aria-live="polite">可读 <strong data-readable-count>{{ readableN }}</strong> · 预告 <strong data-preview-count>{{ previewN }}</strong> <span class="small">筛选后</span></div></section>
+{% endmacro %}
+{% macro lifeTimeline(stops, showSummary) %}
+<ol class="life-timeline">
+{% for stop in stops %}
+<li class="life-stop{% if stop.readable %} is-readable{% else %} is-planned{% endif %}">
+<div class="life-stop-axis" aria-hidden="true"><span class="life-dot"></span></div>
+<article class="life-stop-card">
+<p class="eyebrow"{% if stop.isRepeat %} aria-hidden="true"{% endif %}>{{ stop.stage }}</p>
+<h3>{% if stop.readable %}<a href="{{ stop.url | url }}"{% if stop.isRepeat %} aria-label="{{ stop.accessibleName }}"{% endif %}>{{ stop.title }}</a>{% elif stop.isRepeat %}<span class="visually-hidden">{{ stop.accessibleName }}</span><span aria-hidden="true">{{ stop.title }}</span>{% else %}<span>{{ stop.title }}</span>{% endif %}</h3>
+{% if showSummary and stop.summary %}<p class="life-summary">{{ stop.summary }}</p>{% endif %}
+{% if stop.sameAsNote %}<p class="small life-same-as"{% if stop.isRepeat %} aria-hidden="true"{% endif %}>{{ stop.sameAsNote }}</p>{% endif %}
+<div class="card-bottom"><div class="card-meta">{{ levelBadge(stop.level) }}{% if stop.seriesSlug %}<a class="scene-chip" href="{{ ('/series/' + stop.seriesSlug + '/') | url }}">{{ stop.seriesTitle }}</a>{% endif %}</div>{% if stop.readable %}<a href="{{ stop.url | url }}" aria-label="进入{{ stop.accessibleName }}">进入 →</a>{% else %}<span class="format-badge preview-badge">预告</span>{% endif %}</div>
+</article>
+</li>
+{% endfor %}
+</ol>
+{% endmacro %}
+{% macro lifePathNav(nav, stops) %}
+{% if nav %}
+<nav class="life-path-nav" aria-label="人生路径">
+<p class="eyebrow">人生场景</p>
+<ol class="life-path-stages">
+{% for stop in stops %}
+<li{% if stop.id in nav.currentIds %} class="is-current"{% endif %}>{% if stop.id in nav.currentIds %}<span aria-current="step">{{ stop.stage }}</span>{% elif stop.readable %}<a href="{{ stop.url | url }}">{{ stop.stage }}</a>{% else %}<span>{{ stop.stage }}</span>{% endif %}</li>
+{% endfor %}
+</ol>
+<p class="life-path-neighbors">{% if nav.prev %}<span>上一阶段：{% if nav.prev.readable %}<a href="{{ nav.prev.url | url }}">《{{ nav.prev.title }}》</a>{% else %}{{ nav.prev.stage }} · 预告{% endif %}</span>{% endif %}{% if nav.next %}<span>下一阶段：{% if nav.next.readable %}<a href="{{ nav.next.url | url }}">《{{ nav.next.title }}》</a>{% else %}{{ nav.next.stage }} · 预告{% endif %}</span>{% endif %}</p>
+<a href="{{ '/life/' | url }}">查看完整时间线</a>
+</nav>
+{% endif %}
 {% endmacro %}

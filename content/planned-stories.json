@@ -175,5 +175,45 @@
       "分类框架",
       "能力圈"
     ]
+  },
+  {
+    "slug": "life-child-dca-account",
+    "title": "给孩子定投（独立账户）",
+    "seriesSlug": "family-protection",
+    "difficulty": "L1",
+    "tags": ["投资"],
+    "topics": ["给孩子定投（独立账户）"]
+  },
+  {
+    "slug": "life-graduation-plan",
+    "title": "财富规划",
+    "seriesSlug": "first-paycheck",
+    "difficulty": "L1",
+    "tags": ["投资"],
+    "topics": ["财富规划"]
+  },
+  {
+    "slug": "life-marriage-house-car",
+    "title": "房子和车子",
+    "seriesSlug": "home-and-debt",
+    "difficulty": "L2",
+    "tags": ["投资"],
+    "topics": ["房子和车子"]
+  },
+  {
+    "slug": "life-after-marriage-allocation",
+    "title": "资产配置",
+    "seriesSlug": "family-protection",
+    "difficulty": "L2",
+    "tags": ["投资"],
+    "topics": ["资产配置"]
+  },
+  {
+    "slug": "life-retirement-legacy",
+    "title": "养老与传承",
+    "seriesSlug": "retirement-legacy",
+    "difficulty": "L2",
+    "tags": ["投资"],
+    "topics": ["养老与传承"]
   }
 ]
