@@ -69,9 +69,26 @@ author: Bullie
 
 ## 路由与筛选
 
-- `/`、`/series/<slug>/`、`/story/<slug>/`、`/terms/`
+- `/`、`/series/<slug>/`、`/story/<slug>/`、`/life/`、`/terms/`
 - `?scene=<slug>&tag=投资&tag=交易&difficulty=L1`
 - 标签多选为 OR；scene 与 difficulty 单选；空值为全部；刷新、分享、后退保持一致。
 - 系列页锁定 scene；故事页标签跳索引；难度 query 为 difficulty=L1|L2|L3。
 
 事实、术语与难度由 Bullie 定稿；不荐具体买卖；每篇与页脚均有非投资建议声明。
+
+## format（2026-11-06 迭代）
+
+- `format: story`（默认）：寓言/场景故事；正文小节可叫「故事」。
+- `format: brief`：事实与公开理念叙述，**不要小故事**；建议渲染标题用「正文」或「理念」。术语表、实例、带走句仍可选。
+- 系列 `investor-ideas` 默认 brief；`markets-cycles` 等默认 story。
+- frontmatter 可写 `context`（术语「故事里对应」/「文中对应」）；brief 篇也可用该列标「公开表述关键词」。
+
+
+## 人生场景时间线（2026-11-22）
+
+数据文件：`content/life-timeline.json`。这是一条**索引路径**，不是新的 Series。故事 frontmatter **不要**为此改 `seriesSlug`，也不要新增 `lifeStage` 字段（阶段顺序以 JSON 的 `stops` 为准）。
+
+- 每站：`id`、`stage`、`teaser`、`storySlug`、`plannedDifficulty`（L1/L2/L3）。可选 `sameAs`（另一站 `id`）与 `sameAsNote`。
+- 构建：`storySlug` 已有 `content/stories/<slug>.md` 则为可读（标题/摘要/难度/系列取该篇）；否则为预告，标题用 `teaser`，禁止生成假故事链。
+- 同一 slug 可出现在多个站（例如 `life-child-dca-account`），计数按唯一 slug。
+- 新稿若尚未成文，把对应 slug 写入 `planned-stories.json`，以便系列页「接下来」能显示。IA 与组件见 `docs/LIFE_TIMELINE.md`。

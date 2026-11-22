@@ -16,7 +16,7 @@
 </head>
 <body>
 <a class="skip-link" href="#main">跳到正文</a>
-{{ appHeader(contentData.series) }}
+{{ appHeader(contentData.series, page.url) }}
 <main id="main" tabindex="-1">
 {{ content | safe }}
 </main>

@@ -1,0 +1,8 @@
+---
+layout: base.njk
+title: 人生场景
+permalink: /life/
+description: 按时间顺序走一遍常见人生节点。每篇仍留在原来的系列里，这里只是另一条读法。
+---
+{% from "components.njk" import lifeTimeline %}
+<div class="container page-main"><nav class="breadcrumb" aria-label="面包屑"><a href="{{ '/' | url }}">首页</a><span>/</span><span aria-current="page">人生场景</span></nav><header class="page-header"><p class="eyebrow">人生路径</p><h1>人生场景</h1><p class="lead">{{ contentData.life.summary }}</p><span class="small">{{ contentData.life.stageCount }} 个阶段 · {{ contentData.life.readableCount }} 篇可读 · {{ contentData.life.plannedCount }} 篇预告</span></header>{{ lifeTimeline(contentData.life.stops, true) }}</div>

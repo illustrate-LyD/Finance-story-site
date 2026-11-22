@@ -1,0 +1,57 @@
+{
+  "title": "人生场景",
+  "summary": "按时间顺序走一遍常见人生节点。每篇仍留在原来的系列里，这里只是另一条读法。",
+  "stops": [
+    {
+      "id": "child-years",
+      "stage": "出生到 18 岁",
+      "teaser": "给孩子定投（独立账户）",
+      "storySlug": "life-child-dca-account",
+      "plannedDifficulty": "L1"
+    },
+    {
+      "id": "graduation",
+      "stage": "大学毕业",
+      "teaser": "财富规划",
+      "storySlug": "life-graduation-plan",
+      "plannedDifficulty": "L1"
+    },
+    {
+      "id": "work-insurance",
+      "stage": "工作",
+      "teaser": "保险",
+      "storySlug": "insurance-not-investment",
+      "plannedDifficulty": "L1"
+    },
+    {
+      "id": "marriage",
+      "stage": "结婚",
+      "teaser": "房子和车子",
+      "storySlug": "life-marriage-house-car",
+      "plannedDifficulty": "L2"
+    },
+    {
+      "id": "after-marriage",
+      "stage": "婚后",
+      "teaser": "资产配置",
+      "storySlug": "life-after-marriage-allocation",
+      "plannedDifficulty": "L2"
+    },
+    {
+      "id": "having-child",
+      "stage": "生孩子",
+      "teaser": "孩子独立账户定投",
+      "storySlug": "life-child-dca-account",
+      "plannedDifficulty": "L1",
+      "sameAs": "child-years",
+      "sameAsNote": "与「出生到 18 岁」为同一篇"
+    },
+    {
+      "id": "retirement",
+      "stage": "退休与养老",
+      "teaser": "养老与传承",
+      "storySlug": "life-retirement-legacy",
+      "plannedDifficulty": "L2"
+    }
+  ]
+}
