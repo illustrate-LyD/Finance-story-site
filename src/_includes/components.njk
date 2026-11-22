@@ -4,7 +4,8 @@
 {% set homeHref = '/' | url %}
 {% set lifeHref = '/life/' | url %}
 {% set termsHref = '/terms/' | url %}
-{% set here = currentUrl or '' %}
+{# page.url omits pathPrefix; the url filter adds it, including under GitHub Pages. #}
+{% set here = (currentUrl or '/') | url %}
 <header class="app-bar" id="top"><div class="container bar-inner"><a class="brand" href="{{ homeHref }}" aria-label="金融知识故事站首页"><span class="brand-mark" aria-hidden="true">知</span><span>金融知识故事站</span></a><nav aria-label="主导航"><a href="{{ homeHref }}"{% if here == homeHref or here == homeHref + 'index.html' %} aria-current="page"{% endif %}>首页</a><details class="series-menu"><summary>系列</summary><div>{% for item in seriesItems %}{% if item.publishedStories.length %}<a href="{{ ('/series/' + item.slug + '/') | url }}">{{ item.title }}</a>{% else %}<span class="is-preparing">{% if item.slug == 'family-protection' or '保障' in item.title %}保障专题 · 筹备中{% else %}{{ item.title }} · 筹备中{% endif %}</span>{% endif %}{% endfor %}</div></details><a href="{{ lifeHref }}"{% if here == lifeHref or here == lifeHref + 'index.html' %} aria-current="page"{% endif %}>人生</a><a href="{{ termsHref }}"{% if here == termsHref or here == termsHref + 'index.html' %} aria-current="page"{% endif %}>索引</a></nav><button class="theme-toggle" type="button" data-theme-toggle aria-label="切换到深色主题" aria-pressed="false"><span data-theme-label>深色</span><span aria-hidden="true" data-theme-icon>☾</span></button></div></header>
 {% endmacro %}
 {% macro storyCard(story, seriesItems) %}
