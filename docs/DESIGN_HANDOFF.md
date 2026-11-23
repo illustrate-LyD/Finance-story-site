@@ -11,11 +11,12 @@
 ### 首页 `/`
 
 ```
-[AppBar: Logo | 首页 系列▾ 人生 索引 | ThemeToggle]
+[AppBar: Logo | 首页 系列▾ 人生 生意 索引 | ThemeToggle]
 [Hero: 一句话定位 + CTA「从场景开始」/「术语索引」]
-[HeroNote 诚实数字：N 个场景 · M 篇可读 · K 篇预告]  ← 口径见 §7；场景数不含时间线
+[HeroNote 诚实数字：N 个场景 · M 篇可读 · K 篇预告]  ← 口径见 §7；场景数不含人生/生意索引
 [系列栅格 SeriesCard（有文可进 / 筹备中 soon）]
 [人生路径 LifePath：按人生阶段读，7 站时间线 → /life/]  ← 见 §10，不是第 8 张系列卡
+[生意路径 BusinessPath：按生意读 → /business/]  ← 见 §11，不是新系列，也不是时间线
 [标签快捷 TagChip × 5 → 写入 ?tag= ]
 [「先读这一篇」：1 主推 + 最多 4 续读]  ← 见 §7
 [Footer: 非投资建议短声明]
@@ -55,6 +56,7 @@
 [#带走这几句]（可选）BulletList 2–4 条，视觉略强调（左边线 accent）
 
 [人生路径 LifePathNav：仅当本篇在时间线上；上一/下一阶段 + 链到 /life/]  ← §10
+[生意路径 BusinessPathNav：仅当本篇在生意 stories/relatedStories；链到 /business/]  ← §11
 [相关故事 2–3 · 同系列优先]
 [Footer disclaimer：frontmatter.disclaimer 或站点默认]
 ```
@@ -80,6 +82,19 @@ Nibble：`format` 缺省 = `story`；brief 时 Toc 第一项 label=`理念`，�
 [术语列表 TermRow：词条、短释义、出现篇数]
 [点开：释义 + 出现该术语的故事链接]
 ```
+
+### 生意篇 `/business/`（2026-11-23）
+
+```
+[AppBar: Logo | 首页 系列▾ 人生 生意 索引 | ThemeToggle]
+[页头：生意路径 / 生意 / 导语 / 框架导读 · M 篇可读 · K 篇预告]
+[页内目录 ← sections[]]
+[正文：渲染 content/business-path.md，误区至第七节]
+[相关故事：三个钩子 + 两篇延伸阅读]
+[Footer：非投资建议声明]
+```
+
+无 FilterBar；不要做成时间线。完整组件与验收见 **`docs/BUSINESS_PATH.md`**。索引见 `content/business-path.json`，正文见 `content/business-path.md`（不要当故事采集）。
 
 ---
 
@@ -349,7 +364,7 @@ h1, .story-content h2, .page-header h1, .featured-pick h2, .section-heading h2 {
 
 规则：
 
-1. **场景数** = 导航/栅格里露出的系列数（含筹备中卡），与 IA 一致。**不要**把「人生场景」时间线算进场景数。
+1. **场景数** = 导航/栅格里露出的系列数（含筹备中卡），与 IA 一致。**不要**把「人生场景」时间线或「生意篇」索引算进场景数。
 2. **可读数** = 全站已发布 story+brief 篇数；**预告数** = 全站 planned 条数。
 3. 三个数均服务端/构建时写入，禁止手写死数；构建无内容时显示 `0`，不要藏掉整行。
 4. 副文案仍可保留「不是先背定义…」；数字行用 `.small` / secondary，勿做成大统计墙。
@@ -589,7 +604,7 @@ h1, .story-content h2, .page-header h1, .featured-pick h2, .section-heading h2 {
 |------|------|
 | `src/assets/site.css` | 几乎全部视觉 token 与组件皮肤；**今晚主战场** |
 | `src/assets/site.js` | ThemeToggle（`localStorage['finance-story-theme']`）；一般不用改 |
-| `src/_includes/*`、`src/index.njk`、`src/series.njk`、`src/story.njk`、`src/terms.njk`、`src/life.njk`（新） | 结构/class；人生时间线见 §10，主题文件不必为它重做 |
+| `src/_includes/*`、`src/index.njk`、`src/series.njk`、`src/story.njk`、`src/terms.njk`、`src/life.njk`、`src/business.njk`（新） | 结构/class；人生见 §10，生意见 §11，主题文件不必为它们重做 |
 | `docs/_preview/theme-d-cool-ink.html` | 设计预览，不必部署到 Pages |
 
 ### 9.2 页面块
@@ -600,6 +615,7 @@ h1, .story-content h2, .page-header h1, .featured-pick h2, .section-heading h2 {
     .brand-mark                 金底墨字（深色）
     .series-menu                筹备中项为 span.is-preparing，不是死链
     nav a[href$="/life/"]      人生（2026-11-22 新增）
+    nav a[href$="/business/"]  生意（2026-11-23 新增，在人生与索引之间）
   main#main
   footer.site-footer
 
@@ -614,6 +630,7 @@ h1, .story-content h2, .page-header h1, .featured-pick h2, .section-heading h2 {
     .series-card / .card-bottom 「M 篇可读 · K 篇预告」
     aside.preparing-block       筹备中条（做生意 · 养老与传承；养老有文后按既有规则离开）
   #life-path                    「按人生阶段读」7 站时间线，见 §10
+  #business-path                「按生意读」入口，见 §11（在 life-path 之后、标签快捷之前）
   #start                        「先读这一篇」
     .story-card.featured-pick   仅 1；左 3px accent；CTA「开始阅读」
     .continue-reads             续读 0–4，无预告
@@ -634,11 +651,19 @@ h1, .story-content h2, .page-header h1, .featured-pick h2, .section-heading h2 {
   .term-table                   thead muted
   .takeaways                    accent-soft + 左栏线
   .life-path-nav                仅挂在时间线上的篇；上一/下一阶段
+  .business-path-nav            仅挂在生意 stories/relatedStories 的篇；见 §11
   .related                      「继续读这个系列」
 
 /life/
   .page-header                  「7 个阶段 · M 篇可读 · K 篇预告」
   ol.life-timeline              .life-stop 可读 / 预告 / 同一篇
+
+/business/
+  .page-header                  「框架导读 · M 篇可读 · K 篇预告」（正文到齐后为 5 · 0）
+  .business-toc                 页内锚点，id 取 sections[]；窄屏横滑粘性条
+  .business-body                渲染 business-path.md（跳过文稿 H1；至第七节）
+  .business-lede                开篇误区段
+  .business-stories             三个钩子 + 两篇延伸阅读（预告无假链）
 
 /terms/
   .term-search input
@@ -665,5 +690,19 @@ h1, .story-content h2, .page-header h1, .featured-pick h2, .section-heading h2 {
 5. 新稿主系列：孩子定投、婚后配置 → `family-protection`；毕业规划 → `first-paycheck`；结婚房车 → `home-and-debt`（交叉引用 `mortgage-leverage`）；退休 → `retirement-legacy`（空壳系列按既有规则改为可读）。
 6. 预告站无假链接；口径与 §7 相同，时间线数字按**唯一 slug** 计，「7 个阶段」按站点数计。
 7. **不要**重做深浅色主题或改表面 token。只为时间线加必要 CSS。
+
+改筛选摆法或组件找 UI-web；改事实与难度找 Bullie；工程实现找 Nibble；协调找 Salt。
+
+## 11. 生意篇（2026-11-23 · 给 Nibble）
+
+完整组件、状态与验收见 **`docs/BUSINESS_PATH.md`**。索引见 `content/business-path.json`，总览正文见 `content/business-path.md`。下面是必须遵守的 IA 决定。
+
+1. 这是索引路径 `/business/`，**不是新系列**，不是时间线，不进首页系列栅格，不进 FilterBar，不改 `seriesSlug`，不给故事加生意字段。
+2. 导航在「人生」与「索引」之间加 **生意**，顺序为「首页 · 系列 · 人生 · 生意 · 索引」。首页在 `#life-path` 下、标签快捷上增加「按生意读」（一句误区 + 三张钩子卡 + 延伸阅读，不要把整页表格搬到首页）。Hero 主 CTA 不要改。内链走 pathPrefix `/Finance-story-site/`。
+3. 总览承载：开篇误区、四个问题、九个指标、三张报表一句话、老板仪表盘、阶段/行业重点、六个错误、只能看的五个数，并链到三篇钩子；已有 `better-sales-thinner-margin`、`one-silver-three-ledgers` 只挂不改。
+4. 三篇新钩子均已成文（L2、系列 `running-a-business`）：`profit-rich-cash-poor`、`big-customer-nearly-failed`、`high-margin-still-losing`。不要再写入 `planned-stories.json`。JSON 的 `teaser` 是知识点，不是标题。已有两篇只挂不改。文内 `/story/` 链接须加 pathPrefix。`content/business-path.md` 不要采集成故事。
+5. 难度只用现有 LevelBadge。计数按 `stories` + `relatedStories` 的唯一 slug 构建时计算（当前 5 可读 · 0 预告）。不要把生意篇算进场景数。
+6. 新 CSS 只加在 `#business-path` / `.business-*` / `.business-path-nav`，**不要**复用 `.life-timeline`。窄屏把文稿里的宽表改成卡片，避免页面级横向滚动。
+7. **不要**重做深浅色主题或改表面 token。
 
 改筛选摆法或组件找 UI-web；改事实与难度找 Bullie；工程实现找 Nibble；协调找 Salt。

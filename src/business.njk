@@ -1,0 +1,30 @@
+---
+layout: base.njk
+permalink: /business/
+eleventyComputed:
+  title: "{{ contentData.business.title }}"
+  description: "{{ contentData.business.summary }}"
+---
+{% from "components.njk" import businessHookCards, businessRelatedLinks %}
+{% set biz = contentData.business %}
+<div class="container page-main">
+<nav class="breadcrumb" aria-label="面包屑"><a href="{{ '/' | url }}">首页</a><span>/</span><span aria-current="page">{{ biz.title }}</span></nav>
+<header class="page-header">
+<p class="eyebrow">生意路径</p>
+<h1>{{ biz.title }}</h1>
+<p class="lead">{{ biz.summary }}</p>
+<span class="small">框架导读 · {{ biz.readableCount }} 篇可读 · {{ biz.plannedCount }} 篇预告</span>
+</header>
+<nav class="business-toc" aria-label="页内目录">{% for item in biz.toc %}<a href="#{{ item.id }}">{{ item.title }}</a>{% endfor %}</nav>
+<div class="business-body">
+<div class="business-lede">{{ biz.ledeHtml | safe }}</div>
+{% if biz.introHtml %}{{ biz.introHtml | safe }}{% endif %}
+{% for section in biz.sections %}<section id="{{ section.id }}">{{ section.html | safe }}</section>{% endfor %}
+</div>
+<section class="business-stories" id="business-stories">
+<h2>相关故事</h2>
+{{ businessHookCards(biz.hooks) }}
+<h3>延伸阅读</h3>
+{{ businessRelatedLinks(biz.related) }}
+</section>
+</div>
