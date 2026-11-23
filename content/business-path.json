@@ -1,0 +1,67 @@
+{
+  "title": "生意",
+  "summary": "先盯现金、单位经济和周转。每篇仍留在「做生意」系列里，这里只是另一条读法。",
+  "route": "/business/",
+  "stories": [
+    {
+      "id": "profit-rich-cash-poor",
+      "teaser": "利润 vs 现金流、应收/存货",
+      "storySlug": "profit-rich-cash-poor",
+      "plannedDifficulty": "L2"
+    },
+    {
+      "id": "big-customer-nearly-failed",
+      "teaser": "客户集中度、垫资、CCC",
+      "storySlug": "big-customer-nearly-failed",
+      "plannedDifficulty": "L2"
+    },
+    {
+      "id": "high-margin-still-losing",
+      "teaser": "固定成本、费用率、盈亏平衡",
+      "storySlug": "high-margin-still-losing",
+      "plannedDifficulty": "L2"
+    }
+  ],
+  "relatedStories": [
+    {
+      "storySlug": "better-sales-thinner-margin",
+      "note": "只挂不改",
+      "hangOnly": true
+    },
+    {
+      "storySlug": "one-silver-three-ledgers",
+      "note": "只挂不改",
+      "hangOnly": true
+    }
+  ],
+  "sections": [
+    {
+      "id": "four-questions",
+      "title": "先问四个问题"
+    },
+    {
+      "id": "nine-metrics",
+      "title": "9 个核心指标"
+    },
+    {
+      "id": "three-statements",
+      "title": "三张报表一句话"
+    },
+    {
+      "id": "dashboard",
+      "title": "老板的仪表盘"
+    },
+    {
+      "id": "stage-and-industry",
+      "title": "不同阶段和行业，重点不一样"
+    },
+    {
+      "id": "six-mistakes",
+      "title": "六个最常见的错误"
+    },
+    {
+      "id": "five-numbers",
+      "title": "如果只能看 5 个数"
+    }
+  ]
+}

@@ -6,8 +6,8 @@ const read = (p) => { assert.ok(fs.existsSync(path.join(out, p)), `missing ${p}`
 const home = read('index.html');
 assert.equal((home.match(/class="series-card/g) || []).length, 7, 'home shows every series once retirement has a published story');
 assert.match(home, /名人投资理念/);
-assert.match(home, /7 个场景 · 24 篇可读 · 9 篇预告/);
-assert.match(home, /<aside class="hero-note"><strong>不是先背定义，而是先听故事。<\/strong><p>在熟悉的情境里遇见概念，用白话表格拆清机制，再回到实际例子。<\/p><span class="small">7 个场景 · 24 篇可读 · 9 篇预告<\/span><\/aside>/);
+assert.match(home, /7 个场景 · 27 篇可读 · 9 篇预告/);
+assert.match(home, /<aside class="hero-note"><strong>不是先背定义，而是先听故事。<\/strong><p>在熟悉的情境里遇见概念，用白话表格拆清机制，再回到实际例子。<\/p><span class="small">7 个场景 · 27 篇可读 · 9 篇预告<\/span><\/aside>/);
 assert.equal((home.match(/开始阅读/g) || []).length, 1, 'one primary call to action');
 assert.ok((home.match(/class="story-card /g) || []).length <= 5, 'featured plus at most four continue cards');
 assert.match(home, /先读这一篇/);
@@ -38,10 +38,14 @@ assert.doesNotMatch(retirement, /<span>停了添柴之后，炉火怎么稳着�
 assert.doesNotMatch(retirement, /这个场景正在筹备中/);
 assert.doesNotMatch(retirement, /养老与传承 · 筹备中/);
 const business = read('series/running-a-business/index.html');
-assert.match(business, /data-readable-count>2</);
-assert.match(business, /2 篇可读/);
+assert.match(business, /data-readable-count>5</);
+assert.match(business, /5 篇可读/);
 assert.match(business, /<a href="\/story\/better-sales-thinner-margin\/">卖得更好，为什么下一季的利更薄？<\/a>/);
 assert.match(business, /<a href="\/story\/one-silver-three-ledgers\/">同一串银子，为什么能把三本账都写满？<\/a>/);
+assert.match(business, /<a href="\/story\/profit-rich-cash-poor\/">利润 200 万，账上只有 20 万<\/a>/);
+assert.match(business, /<a href="\/story\/big-customer-nearly-failed\/">接了一个大客户，公司差点倒闭<\/a>/);
+assert.match(business, /<a href="\/story\/high-margin-still-losing\/">毛利率 40%，为什么越卖越亏<\/a>/);
+assert.match(business, /本系列有 5 篇也出现在<a href="\/business\/">生意篇<\/a>/);
 assert.doesNotMatch(business, /这个场景正在筹备中/);
 assert.doesNotMatch(business, /也出现在<a href="\/life\/">人生场景/);
 const protection = read('series/family-protection/index.html');
@@ -67,10 +71,10 @@ for (const slug of ['ledger-hears-no-coins', 'tide-goes-out', 'shelf-vs-hotpot',
   assert.ok(!fs.existsSync(path.join(out, `story/${slug}/index.html`)), `planned ${slug} has no fake story page`);
 }
 const index = read('terms/index.html');
-assert.equal((index.match(/class="term-row"/g) || []).length, 82, 'eighty-two terms after the five life stories');
+assert.equal((index.match(/class="term-row"/g) || []).length, 94, 'ninety-four terms after the three business stories');
 assert.match(index, /data-scene=/); assert.match(index, /data-difficulty=/); assert.match(index, /data-tag=/); assert.match(index, /name="difficulty"/);
 assert.match(index, /data-term-search/); assert.match(index, /name="q"/);
-assert.match(index, /data-readable-count>82</);
+assert.match(index, /data-readable-count>94</);
 assert.match(index, /data-preview-count>0</);
 assert.match(index, /data-tag="保险"/);
 assert.doesNotMatch(index, /data-tag="保险"[^>]*>保障专题 · 筹备中/);
@@ -194,7 +198,7 @@ assert.match(home, /7 个阶段 · 6 篇可读 · 0 篇预告/);
 assert.equal((home.match(/class="life-stop is-readable"/g) || []).length, 7);
 assert.match(home, /href="\/life\/">查看完整时间线 →<\/a>/);
 assert.match(home, /href="\/" aria-current="page">首页<\/a>/);
-assert.match(home, /<a href="\/life\/">人生<\/a><a href="\/terms\/">索引<\/a>/);
+assert.match(home, /<a href="\/life\/">人生<\/a><a href="\/business\/">生意<\/a><a href="\/terms\/">索引<\/a>/);
 assert.equal((home.match(/class="life-stop /g) || []).length, 7);
 assert.doesNotMatch(home, /class="series-card[\s\S]{0,80}人生场景/);
 const insurance = read('story/insurance-not-investment/index.html');
@@ -278,4 +282,102 @@ assert.doesNotMatch(markets, /精读尚无可读正文/);
 assert.match(read('story/dollar-tide-fed-gold/index.html'), /level-L3/);
 assert.match(read('story/dollar-tide-fed-gold/index.html'), /不是定律|不构成任何投资建议/);
 
-console.log('P0 smoke tests: PASS — 24 readable, 9 previews, 82 terms; life timeline 7/6/0; five life stories published.');
+const overview = read('business/index.html');
+assert.match(overview, /<h1>生意<\/h1>/);
+assert.equal((overview.match(/<h1/g) || []).length, 1, 'business page has a single H1');
+assert.doesNotMatch(overview, /<h1>生意篇<\/h1>/);
+assert.match(overview, /href="\/business\/" aria-current="page">生意<\/a>/);
+assert.match(overview, /框架导读 · 5 篇可读 · 0 篇预告/);
+assert.doesNotMatch(overview, /data-filter-form|class="filter-panel"/);
+assert.doesNotMatch(overview, /从这里读进去|经营知识框架导读/);
+assert.match(overview, /老板最该盯的不是「利润」，是「现金、单位经济、周转」。/);
+assert.match(overview, /id="four-questions"/);
+assert.match(overview, /id="nine-metrics"/);
+assert.match(overview, /id="three-statements"/);
+assert.match(overview, /id="dashboard"/);
+assert.match(overview, /id="stage-and-industry"/);
+assert.match(overview, /id="six-mistakes"/);
+assert.match(overview, /id="five-numbers"/);
+assert.match(overview, /id="business-stories"/);
+assert.match(overview, /经营活动现金流入 − 流出/);
+assert.match(overview, /固定成本 ÷ 边际贡献率/);
+assert.match(overview, /前五大客户营收 ÷ 总营收/);
+assert.match(overview, /少于 6 个月/);
+assert.match(overview, /超过 30% 警惕，超过 50% 危险/);
+assert.match(overview, /13 周现金流预测/);
+assert.match(overview, /初创公司把第 3 个换成<strong>现金跑道<\/strong>/);
+assert.match(overview, /href="\/story\/profit-rich-cash-poor\/"/);
+assert.match(overview, /href="\/story\/big-customer-nearly-failed\/"/);
+assert.match(overview, /href="\/story\/high-margin-still-losing\/"/);
+assert.match(overview, /href="\/story\/better-sales-thinner-margin\/"/);
+assert.match(overview, /href="\/story\/one-silver-three-ledgers\/"/);
+assert.equal((overview.match(/<table/g) || []).length, 5);
+assert.match(overview, /data-cols="5"/);
+assert.match(overview, /<span data-field>公式<\/span>/);
+assert.doesNotMatch(overview, /class="life-timeline"|class="life-stop|class="filter-bar"/);
+assert.ok(!fs.existsSync(path.join(out, 'story/business-path/index.html')), 'overview markdown is not a story');
+const lifeAt = home.indexOf('id="life-path"');
+const businessAt = home.indexOf('id="business-path"');
+const tagsAt = home.indexOf('从知识域快速进入');
+assert.ok(lifeAt > 0 && businessAt > lifeAt && tagsAt > businessAt, '按生意读 sits after the life path and before tag shortcuts');
+assert.match(home, /<h2>按生意读<\/h2>/);
+assert.match(home, /框架导读 · 5 篇可读 · 0 篇预告/);
+assert.match(home, /<p class="business-lede">老板最该盯的不是「利润」，是「现金、单位经济、周转」。<\/p>/);
+assert.match(home, /href="\/business\/">查看生意篇总览 →<\/a>/);
+assert.doesNotMatch(home, /经营活动现金流入 − 流出/, 'home does not repeat the metrics table');
+assert.doesNotMatch(home, /class="series-card[\s\S]{0,80}生意篇/);
+for (const slug of ['markets-cycles', 'first-paycheck', 'home-and-debt', 'family-protection', 'investor-ideas', 'retirement-legacy']) {
+  assert.doesNotMatch(read(`series/${slug}/index.html`), /生意篇/, `${slug} does not mention 生意篇`);
+}
+const profit = read('story/profit-rich-cash-poor/index.html');
+assert.match(profit, /class="business-path-nav"/);
+assert.match(profit, /本篇对着：利润 vs 现金流、应收\/存货/);
+assert.doesNotMatch(profit, /上一篇/);
+assert.match(profit, /下一篇：<a href="\/story\/big-customer-nearly-failed\/">《接了一个大客户，公司差点倒闭》<\/a>/);
+assert.ok(profit.indexOf('class="business-path-nav"') < profit.indexOf('继续读这个系列'));
+assert.doesNotMatch(profit.match(/id="story"[\s\S]*?(?=<section id="terms")/)?.[0] || '', /business-path-nav/);
+assert.match(profit, /返回系列 · 做生意/);
+const middle = read('story/big-customer-nearly-failed/index.html');
+assert.match(middle, /本篇对着：客户集中度、垫资、CCC/);
+assert.match(middle, /上一篇：<a href="\/story\/profit-rich-cash-poor\/">《利润 200 万，账上只有 20 万》<\/a>/);
+assert.match(middle, /下一篇：<a href="\/story\/high-margin-still-losing\/">《毛利率 40%，为什么越卖越亏》<\/a>/);
+const lastHook = read('story/high-margin-still-losing/index.html');
+assert.match(lastHook, /本篇对着：固定成本、费用率、盈亏平衡/);
+assert.match(lastHook, /上一篇：<a href="\/story\/big-customer-nearly-failed\/">《接了一个大客户，公司差点倒闭》<\/a>/);
+assert.doesNotMatch(lastHook, /下一篇/);
+for (const slug of ['better-sales-thinner-margin', 'one-silver-three-ledgers']) {
+  const page = read(`story/${slug}/index.html`);
+  assert.match(page, /生意路径 · 延伸阅读/);
+  assert.match(page, /本篇也出现在生意总览里。/);
+  assert.doesNotMatch(page, /上一篇|下一篇|本篇对着/);
+  assert.match(page, /返回系列 · 做生意/);
+  assert.ok(page.indexOf('class="business-path-nav"') < page.indexOf('继续读这个系列'));
+}
+assert.doesNotMatch(read('story/three-jars/index.html'), /class="business-path-nav"/);
+assert.doesNotMatch(read('story/insurance-not-investment/index.html'), /class="business-path-nav"/);
+const businessStories = {
+  'profit-rich-cash-poor': { title: '利润 200 万，账上只有 20 万', terms: ['经营现金流净额', '应收账款', '存货', '利润表', '现金流量表'], contexts: ['银箱里真正进来、出去的那一笔', '柜上那一叠还没兑成银子的欠条', '后院坛罐里已经付过钱的漆和油', '写着「本年利润 200 万」的那本亮账', '跟亮账对不上的那只银箱'] },
+  'big-customer-nearly-failed': { title: '接了一个大客户，公司差点倒闭', terms: ['客户集中度', '垫资', '现金转换周期'], contexts: ['长风船帮一家的单子，占了坊里大半本进账', '麻已买、布已织、帆已送，船帮的银子还在江上', '老瞿在粉板上写下的那道「九十加六十减三十」'] },
+  'high-margin-still-losing': { title: '毛利率 40%，为什么越卖越亏', terms: ['固定成本', '费用率', '盈亏平衡点', '单位经济'], contexts: ['临河大铺的租契和一排新雇的帮手', '租、人手和招揽的灯火，占去了进账的一大截', '老裴算出的「每个月要卖到那条线，才不亏」', '一盒糕的账：卖价减去糕本身、招揽和伺候的成本'] },
+};
+for (const [slug, spec] of Object.entries(businessStories)) {
+  const page = read(`story/${slug}/index.html`);
+  assert.match(page, new RegExp(`<h1>${spec.title}</h1>`), slug);
+  assert.match(page, /返回系列 · 做生意/, slug);
+  assert.match(page, /2026-11-23/, slug);
+  assert.match(page, /level-L2/, slug);
+  assert.match(page, /href="#story">故事/, slug);
+  const table = page.match(/class="term-table"[\s\S]*?<\/table>/)?.[0] || '';
+  for (const term of spec.terms) assert.match(table, new RegExp(`<th scope="row">${term}</th>`), `${slug} ${term}`);
+  for (const context of spec.contexts) assert.match(table, new RegExp(`<td>${context}</td>`), `${slug} context`);
+  assert.match(index, new RegExp(`id="term-${spec.terms[0]}"`), spec.terms[0]);
+}
+assert.match(css, /#business-path/);
+assert.match(css, /\.business-toc/);
+assert.match(css, /\.business-lede/);
+assert.match(css, /\.business-body/);
+assert.match(css, /\.business-stories/);
+assert.match(css, /\.business-path-nav/);
+assert.doesNotMatch(css, /\.life-timeline,\s*\.business|\.business-path-nav,\s*\.life-path-nav/, 'business path does not reuse life timeline selectors');
+
+console.log('P0 smoke tests: PASS — 27 readable, 9 previews, 94 terms; life timeline 7/6/0; business path 5/0.');

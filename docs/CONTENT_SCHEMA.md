@@ -69,7 +69,7 @@ author: Bullie
 
 ## 路由与筛选
 
-- `/`、`/series/<slug>/`、`/story/<slug>/`、`/life/`、`/terms/`
+- `/`、`/series/<slug>/`、`/story/<slug>/`、`/life/`、`/business/`、`/terms/`
 - `?scene=<slug>&tag=投资&tag=交易&difficulty=L1`
 - 标签多选为 OR；scene 与 difficulty 单选；空值为全部；刷新、分享、后退保持一致。
 - 系列页锁定 scene；故事页标签跳索引；难度 query 为 difficulty=L1|L2|L3。
@@ -92,3 +92,12 @@ author: Bullie
 - 构建：`storySlug` 已有 `content/stories/<slug>.md` 则为可读（标题/摘要/难度/系列取该篇）；否则为预告，标题用 `teaser`，禁止生成假故事链。
 - 同一 slug 可出现在多个站（例如 `life-child-dca-account`），计数按唯一 slug。
 - 新稿若尚未成文，把对应 slug 写入 `planned-stories.json`，以便系列页「接下来」能显示。IA 与组件见 `docs/LIFE_TIMELINE.md`。
+
+## 生意篇（2026-11-23）
+
+这是一条**索引路径**，不是新的 Series，也不是时间线。故事 frontmatter **不要**为此改 `seriesSlug`，也不要新增生意字段。
+
+- 路径索引：`content/business-path.json`。钩子在 `stories[]`（`id`、`teaser`、`storySlug`、`plannedDifficulty`），延伸阅读在 `relatedStories[]`。目录锚点在 `sections[]`。
+- **`teaser` 是知识点一行，不是卡片标题。** 已有 `content/stories/<slug>.md` 时，标题/摘要/难度/系列取该篇；无正文才是预告，禁止生成假故事链。
+- 总览正文：`content/business-path.md`（inbox 副本 `content/inbox-business-path/business-overview.md`）。**不要**把它采集进 `content/stories` 或生成故事页。文内 `/story/<slug>/` 链接构建时必须加上 pathPrefix。
+- 三篇新稿已在 `content/stories/`，不必再写入 `planned-stories.json`。计数按 `stories` + `relatedStories` 的唯一 slug。IA 与组件见 `docs/BUSINESS_PATH.md`。

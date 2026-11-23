@@ -3,10 +3,11 @@
 {% macro appHeader(seriesItems, currentUrl) %}
 {% set homeHref = '/' | url %}
 {% set lifeHref = '/life/' | url %}
+{% set businessHref = '/business/' | url %}
 {% set termsHref = '/terms/' | url %}
 {# page.url omits pathPrefix; the url filter adds it, including under GitHub Pages. #}
 {% set here = (currentUrl or '/') | url %}
-<header class="app-bar" id="top"><div class="container bar-inner"><a class="brand" href="{{ homeHref }}" aria-label="金融知识故事站首页"><span class="brand-mark" aria-hidden="true">知</span><span>金融知识故事站</span></a><nav aria-label="主导航"><a href="{{ homeHref }}"{% if here == homeHref or here == homeHref + 'index.html' %} aria-current="page"{% endif %}>首页</a><details class="series-menu"><summary>系列</summary><div>{% for item in seriesItems %}{% if item.publishedStories.length %}<a href="{{ ('/series/' + item.slug + '/') | url }}">{{ item.title }}</a>{% else %}<span class="is-preparing">{% if item.slug == 'family-protection' or '保障' in item.title %}保障专题 · 筹备中{% else %}{{ item.title }} · 筹备中{% endif %}</span>{% endif %}{% endfor %}</div></details><a href="{{ lifeHref }}"{% if here == lifeHref or here == lifeHref + 'index.html' %} aria-current="page"{% endif %}>人生</a><a href="{{ termsHref }}"{% if here == termsHref or here == termsHref + 'index.html' %} aria-current="page"{% endif %}>索引</a></nav><button class="theme-toggle" type="button" data-theme-toggle aria-label="切换到深色主题" aria-pressed="false"><span data-theme-label>深色</span><span aria-hidden="true" data-theme-icon>☾</span></button></div></header>
+<header class="app-bar" id="top"><div class="container bar-inner"><a class="brand" href="{{ homeHref }}" aria-label="金融知识故事站首页"><span class="brand-mark" aria-hidden="true">知</span><span>金融知识故事站</span></a><nav aria-label="主导航"><a href="{{ homeHref }}"{% if here == homeHref or here == homeHref + 'index.html' %} aria-current="page"{% endif %}>首页</a><details class="series-menu"><summary>系列</summary><div>{% for item in seriesItems %}{% if item.publishedStories.length %}<a href="{{ ('/series/' + item.slug + '/') | url }}">{{ item.title }}</a>{% else %}<span class="is-preparing">{% if item.slug == 'family-protection' or '保障' in item.title %}保障专题 · 筹备中{% else %}{{ item.title }} · 筹备中{% endif %}</span>{% endif %}{% endfor %}</div></details><a href="{{ lifeHref }}"{% if here == lifeHref or here == lifeHref + 'index.html' %} aria-current="page"{% endif %}>人生</a><a href="{{ businessHref }}"{% if here == businessHref or here == businessHref + 'index.html' %} aria-current="page"{% endif %}>生意</a><a href="{{ termsHref }}"{% if here == termsHref or here == termsHref + 'index.html' %} aria-current="page"{% endif %}>索引</a></nav><button class="theme-toggle" type="button" data-theme-toggle aria-label="切换到深色主题" aria-pressed="false"><span data-theme-label>深色</span><span aria-hidden="true" data-theme-icon>☾</span></button></div></header>
 {% endmacro %}
 {% macro storyCard(story, seriesItems) %}
 <article class="story-card {% if story.planned %}planned{% endif %}" data-story data-planned="{{ 'true' if story.planned else 'false' }}" data-scene="{{ story.seriesSlug }}" data-tags="{{ story.tags | join(',') }}" data-difficulty="{{ story.level }}"{% if story.planned %} aria-disabled="true"{% endif %}>
@@ -50,6 +51,28 @@
 </ol>
 <p class="life-path-neighbors">{% if nav.prev %}<span>上一阶段：{% if nav.prev.readable %}<a href="{{ nav.prev.url | url }}">《{{ nav.prev.title }}》</a>{% else %}{{ nav.prev.stage }} · 预告{% endif %}</span>{% endif %}{% if nav.next %}<span>下一阶段：{% if nav.next.readable %}<a href="{{ nav.next.url | url }}">《{{ nav.next.title }}》</a>{% else %}{{ nav.next.stage }} · 预告{% endif %}</span>{% endif %}</p>
 <a href="{{ '/life/' | url }}">查看完整时间线</a>
+</nav>
+{% endif %}
+{% endmacro %}
+{% macro businessHookCards(hooks) %}
+<div class="story-list">{% for hook in hooks %}<article class="story-card{% if not hook.readable %} planned{% endif %}"{% if not hook.readable %} aria-disabled="true"{% endif %}><div class="card-meta">{% if hook.seriesSlug %}<a class="scene-chip" href="{{ ('/series/' + hook.seriesSlug + '/') | url }}">{{ hook.seriesTitle }}</a>{% endif %}{{ levelBadge(hook.level) }}{% if not hook.readable %}<span class="format-badge preview-badge">预告</span>{% endif %}</div>{% if hook.readable %}<h3><a href="{{ hook.url | url }}">{{ hook.title }}</a></h3>{% else %}<h3><span>{{ hook.title }}</span></h3>{% endif %}{% if hook.knowledge %}<p class="small">{{ hook.knowledge }}</p>{% endif %}{% if hook.readable %}<a href="{{ hook.url | url }}">进入 →</a>{% endif %}</article>{% endfor %}</div>
+{% endmacro %}
+{% macro businessRelatedLinks(related) %}
+<ul>{% for item in related %}<li>{% if item.readable %}<a href="{{ item.url | url }}">{{ item.title }}</a>{% else %}<span>{{ item.title }}</span> <span class="format-badge preview-badge">预告</span>{% endif %}{{ levelBadge(item.level) }}</li>{% endfor %}</ul>
+{% endmacro %}
+{% macro businessPathNav(nav) %}
+{% if nav %}
+<nav class="business-path-nav" aria-label="生意路径">
+{% if nav.role == 'hook' %}
+<p class="eyebrow">生意路径</p>
+<p>本篇对着：{{ nav.knowledge }}</p>
+<p>{% if nav.prev %}<span>上一篇：{% if nav.prev.readable %}<a href="{{ nav.prev.url | url }}">《{{ nav.prev.title }}》</a>{% else %}《{{ nav.prev.title }}》 · 预告{% endif %}</span>{% endif %}{% if nav.next %}<span>下一篇：{% if nav.next.readable %}<a href="{{ nav.next.url | url }}">《{{ nav.next.title }}》</a>{% else %}《{{ nav.next.title }}》 · 预告{% endif %}</span>{% endif %}</p>
+{% else %}
+<p class="eyebrow">生意路径 · 延伸阅读</p>
+<p>本篇也出现在生意总览里。</p>
+{% if nav.hooks %}<p>{% for hook in nav.hooks %}{% if hook.readable %}<a href="{{ hook.url | url }}">{{ hook.title }}</a>{% endif %}{% endfor %}</p>{% endif %}
+{% endif %}
+<a href="{{ '/business/' | url }}">查看生意篇总览 →</a>
 </nav>
 {% endif %}
 {% endmacro %}
